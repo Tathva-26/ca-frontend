@@ -1,11 +1,12 @@
 .page-2 {
-	background: linear-gradient(180deg, rgba(200, 74, 244, 0) 0%, #2ff3ff 61.98%, #ee2fff 100%);
+	background: linear-gradient(180deg, rgba(214, 215, 217, 0) 0%, #d6d7d9 61.98%, #c89b3c 100%);
 	background-size: 100% 60%;
 	background-repeat: no-repeat;
 	background-position: bottom;
 }
 
 .page-2-heading {
+	font-size: 3.45rem;
 	font-weight: 600;
 	margin-bottom: 2.5rem;
 	line-height: 1.1;
@@ -29,6 +30,10 @@
 }
 
 @media (max-width: 600px) {
+	.page-2-heading {
+		font-size: 2.45rem;
+	}
+
 	.page-2-cards-wrapper {
 		grid-template-columns: 1fr;
 	}

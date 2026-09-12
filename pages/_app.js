@@ -37,6 +37,10 @@ import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 
 import Head from 'next/head'
+
+import Lenis from 'lenis'
+import 'lenis/dist/lenis.css'
+
 import Nav from 'components/common/Nav'
 import Footer from 'components/common/Footer'
 import UserContextWrapper from 'context/UserContext'
@@ -94,8 +98,10 @@ export default function MyApp({ Component, pageProps }) {
 				<meta name='twitter:title' content={TITLE} />
 				<meta name='twitter:description' content={DESCRIPTION} />
 			</Head>
+
 			<UserContextWrapper>
 				<Nav />
+
 				{router?.pathname?.includes('/dashboard') ? (
 					<DashboardLayout>
 						<Component {...pageProps} />

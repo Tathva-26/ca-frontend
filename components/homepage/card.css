@@ -1,43 +1,120 @@
 .card-wrapper {
-	display: flex;
-	align-items: stretch;
 	position: relative;
 	width: 100%;
 	height: 100%;
+	min-height: 22rem;
+	display: flex;
+	align-items: stretch;
+	overflow: hidden;
+	border-radius: 1.25rem;
+	background: #121212;
 }
+
+.card-wrapper::before {
+	content: '';
+	position: absolute;
+	inset: -50%;
+	z-index: 1;
+	background: conic-gradient(
+		transparent,
+		#c59a27 20%,
+		#f6d365 40%,
+		transparent 60%,
+		#c59a27 80%,
+		transparent 100%
+	);
+	animation: rotateGold 6s linear infinite;
+}
+
 .card {
-	background-color: #000;
-	background-size: 30px 30px;
-	background-image: linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-	padding: 1.5rem;
-	border: 1px solid #fff;
+	position: relative;
 	z-index: 2;
-	width: 100%;
-	height: 100%;
+	flex: 1;
+	min-height: 0;
+	margin: 4px;
+	padding: 2rem 1.5rem;
+	border-radius: 1rem;
+	background: radial-gradient(circle at 50% 0%, rgba(197, 154, 39, 0.12), transparent 45%), #1a1a1a;
+	box-shadow: inset 0 0 1.25rem rgba(0, 0, 0, 0.6);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.card-wrapper:hover .card {
+	transform: translateY(-0.2rem);
+	box-shadow: inset 0 0 1.25rem rgba(0, 0, 0, 0.6), 0 0.75rem 2rem rgba(197, 154, 39, 0.18);
+}
+
 .card-bg {
 	position: absolute;
-	top: 0.75rem;
-	left: 0.75rem;
-	width: 100%;
-	height: 100%;
-	background: var(--primary);
-	border: 1px solid #fff;
-	box-shadow: 0 0.5rem 2.25rem #2993f5;
+	inset: 0;
+	z-index: 0;
+	background: radial-gradient(circle at 50% 100%, rgba(197, 154, 39, 0.16), transparent 55%);
+	box-shadow: 0 0.5rem 2.25rem rgba(163, 123, 25, 0.2);
 }
+
 .card img {
 	width: 100px;
 }
+
 .card h4 {
-	font-size: 2rem;
-	margin: 0;
-	margin-top: 0.5rem;
+	font-size: 1.75rem;
+	color: #fff;
+	margin: 1.25rem 0 0;
+	letter-spacing: 0.04em;
 }
+
 .card p {
 	font-family: 'Inter', sans-serif;
-	font-size: 1.125rem;
-	color: rgba(255, 255, 255, 0.7);
-	margin: 0;
+	font-size: 1rem;
+	color: #fff;
+	margin: 0.75rem 0 0;
 	line-height: 1.5;
+}
+
+.card .ringed-icon {
+	background: transparent;
+}
+
+.card .ringed-icon .ring
+{
+	background: transparent;
+}
+
+
+/* .card .ringed-icon .ring, */
+.card .ringed-icon .icon-wrapper {
+	background: linear-gradient(45deg, #a37b19, #f6d365 50%, #c59a27);
+}
+
+.card .ringed-icon .icon-wrapper > * {
+	filter: invert(1);
+}
+
+.card .ringed-icon .ring {
+	animation: none;
+}
+
+@keyframes rotateGold {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card-wrapper::before,
+	.card .ringed-icon .ring {
+		animation: none;
+	}
+
+	.card {
+		transition: none;
+	}
 }

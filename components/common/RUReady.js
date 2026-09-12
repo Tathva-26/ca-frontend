@@ -40,8 +40,8 @@ export default function RUReady() {
 						</p>
 					</div>
 				</div>
-				<button className={`btn-primary ${styles['r-u-ready-btn']}`} onClick={handleClick}>
-					Sign up
+				<button className={styles['sign-up-btn']} onClick={handleClick}>
+					<span>Sign up</span>
 				</button>
 			</div>
 			<div className='spacerv-md'></div>

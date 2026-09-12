@@ -21,19 +21,24 @@
 	width: 90px;
 	animation: vic-shake 1.5s cubic-bezier(0.45, -0.01, 0, 1) infinite;
 }
+
 @keyframes vic-shake {
 	0% {
 		transform: rotate(-5deg);
 	}
+
 	30% {
 		transform: rotate(-5deg);
 	}
+
 	55% {
 		transform: rotate(10deg);
 	}
+
 	82% {
 		transform: rotate(-28deg);
 	}
+
 	100% {
 		transform: rotate(-5deg);
 	}
@@ -49,10 +54,78 @@
 	color: rgba(255, 255, 255, 0.7);
 }
 
-.r-u-ready-btn {
-	font-family: 'Clash Display', sans-serif;
+.sign-up-btn {
+	position: relative;
+	overflow: hidden;
+	padding: 12px 32px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	font-weight: 500;
-	font-size: 1.25rem;
+	font-size: 18px;
+	background: #e5b842;
+	color: #000;
+	text-shadow: none;
+	border-radius: 9999px;
+	border: none;
+	cursor: pointer;
+	z-index: 1;
+	/* outer "lift" shadow only lives here — this one isn't blocked by ::before
+	   since it's an outer shadow, not inset */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sign-up-btn::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	bottom: -50%;
+	left: -50%;
+	right: -50%;
+	width: 200%;
+	height: 200%;
+
+	background: linear-gradient(
+		135deg,
+		#d3d7de 0%,
+		#d3d7de 25%,
+		#dbd7cd 35%,
+		#e2d3b2 45%,
+		#ebd18f 52%,
+		#e5b842 60%,
+		#e5b842 100%
+	);
+
+	box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.9), inset 0 4px 6px rgba(255, 255, 255, 0.5),
+		inset 0 -3px 2px rgba(120, 85, 20, 0.5), inset 0 -6px 8px rgba(90, 60, 10, 0.35),
+		inset 2px 0 3px rgba(255, 255, 255, 0.3), inset -2px 0 3px rgba(120, 85, 20, 0.3);
+
+	transform: translate(-25%, -25%);
+	transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+	z-index: -1;
+}
+
+.sign-up-btn span {
+	position: relative;
+	z-index: 1;
+}
+
+.sign-up-btn:hover::before {
+	transform: translate(25%, 25%);
+}
+
+.sign-up-btn:hover {
+	box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+	transform: translateY(-1px);
+}
+
+.sign-up-btn:active::before {
+	box-shadow: inset 0 -2px 1px rgba(255, 255, 255, 0.6), inset 0 3px 6px rgba(120, 85, 20, 0.5),
+		inset 2px 2px 4px rgba(90, 60, 10, 0.4);
+}
+
+.sign-up-btn:active {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	transform: translateY(2px);
 }
 
 @media (max-width: 768px) {
@@ -81,6 +154,7 @@
 		margin-bottom: 1rem;
 	}
 }
+
 @media (max-width: 550px) {
 	.r-u-ready {
 		margin-top: 1rem;
