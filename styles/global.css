@@ -5,11 +5,9 @@
 html {
 	width: 100%;
 	overflow-x: hidden;
-	scroll-behavior: smooth;
 }
 
 body {
-	scroll-behavior: smooth;
 	position: relative;
 	min-width: 360px;
 	color: #ffffff;

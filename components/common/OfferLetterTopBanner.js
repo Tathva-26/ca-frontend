@@ -37,8 +37,8 @@ export default function OfferLetterTopBanner() {
 	const showBanner = isQualified && !dismissed && router.pathname !== '/dashboard/profile'
 
 	return (
-		<>
-			{showBanner && (
+        <>
+            {showBanner && (
 				<div className='offer-top-banner' role='alert'>
 					<div className='offer-top-banner-inner'>
 						<div className='offer-top-banner-left'>
@@ -57,12 +57,12 @@ export default function OfferLetterTopBanner() {
 								<span>View Offer Letter</span>
 							</button>
 
-							<Link href='/dashboard/profile'>
-								<a className='banner-btn-profile'>
-									<span>Download in Profile</span>
-									<FiArrowRight />
-								</a>
-							</Link>
+							<Link href='/dashboard/profile' className='banner-btn-profile'>
+
+                                <span>Download in Profile</span>
+                                <FiArrowRight />
+
+                            </Link>
 
 							<button
 								onClick={handleDismiss}
@@ -77,7 +77,7 @@ export default function OfferLetterTopBanner() {
 				</div>
 			)}
 
-			<OfferLetterModal isOpen={showModal} onClose={() => setShowModal(false)} user={user} />
-		</>
-	)
+            <OfferLetterModal isOpen={showModal} onClose={() => setShowModal(false)} user={user} />
+        </>
+    );
 }

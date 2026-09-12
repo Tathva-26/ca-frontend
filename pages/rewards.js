@@ -21,8 +21,8 @@ export default function RewardsPage() {
 	const pointsPercent = Math.min(Math.round((userPoints / 299) * 100), 100)
 
 	return (
-		<>
-			<Head>
+        <>
+            <Head>
 				<title>Rewards · Tathva &apos;26 Campus Ambassador</title>
 				<meta
 					name='description'
@@ -30,7 +30,7 @@ export default function RewardsPage() {
 				/>
 			</Head>
 
-			<div className={styles.rewardsPageWrapper}>
+            <div className={styles.rewardsPageWrapper}>
 				<div className='container'>
 					{/* Header */}
 					<div className={styles.rewardsHeader}>
@@ -97,20 +97,20 @@ export default function RewardsPage() {
 									<span>View Offer Letter</span>
 								</button>
 							) : (
-								<Link href='/dashboard/referrals'>
-									<a className={styles.progressActionBtn}>
-										<span>Earn More Points</span>
-										<FiArrowRight />
-									</a>
-								</Link>
+								<Link href='/dashboard/referrals' className={styles.progressActionBtn}>
+
+                                    <span>Earn More Points</span>
+                                    <FiArrowRight />
+
+                                </Link>
 							)
 						) : (
-							<Link href='/login'>
-								<a className={styles.progressActionBtn}>
-									<span>Sign In to Unlock</span>
-									<FiArrowRight />
-								</a>
-							</Link>
+							<Link href='/login' className={styles.progressActionBtn}>
+
+                                <span>Sign In to Unlock</span>
+                                <FiArrowRight />
+
+                            </Link>
 						)}
 					</div>
 
@@ -282,8 +282,8 @@ export default function RewardsPage() {
 				<FinalCTA />
 			</div>
 
-			{/* Offer Letter Popup Modal */}
-			<OfferLetterModal isOpen={showOfferModal} onClose={() => setShowOfferModal(false)} />
-		</>
-	)
+            {/* Offer Letter Popup Modal */}
+            <OfferLetterModal isOpen={showOfferModal} onClose={() => setShowOfferModal(false)} />
+        </>
+    );
 }

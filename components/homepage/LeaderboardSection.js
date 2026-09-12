@@ -29,8 +29,8 @@ export default function LeaderboardSection() {
 	const maxPoints = leaderboard.length > 0 ? (leaderboard[0].count || 1) * 10 : 1000
 
 	return (
-		<section className='leaderboard-section' id='leaderboard'>
-			<div className='container'>
+        <section className='leaderboard-section' id='leaderboard'>
+            <div className='container'>
 				<div className='leaderboard-header'>
 					<div className='leaderboard-header-left'>
 						<span className='leaderboard-overline'>08 // SUB-CONTINENTAL RANKINGS</span>
@@ -43,8 +43,8 @@ export default function LeaderboardSection() {
 						</p>
 					</div>
 
-					<Link href='/leaderboard'>
-						<a className='btn-outline'>View Full Leaderboard →</a>
+					<Link href='/leaderboard' className='btn-outline'>
+						View Full Leaderboard →
 					</Link>
 				</div>
 
@@ -114,6 +114,6 @@ export default function LeaderboardSection() {
 					)}
 				</div>
 			</div>
-		</section>
-	)
+        </section>
+    );
 }

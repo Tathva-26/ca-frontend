@@ -30,7 +30,11 @@ import 'components/dashboard/posters.css'
 
 import 'lib/firebase'
 
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+
+import Lenis from 'lenis'
+import 'lenis/dist/lenis.css'
 
 import Head from 'next/head'
 import Nav from 'components/common/Nav'
@@ -48,6 +52,21 @@ const SITE_DOMAIN = 'ca.tathva.org'
 
 export default function MyApp({ Component, pageProps }) {
 	const router = useRouter()
+
+	useEffect(() => {
+		const lenis = new Lenis({
+			autoRaf: true,
+			autoToggle: true,
+			anchors: true,
+			allowNestedScroll: true,
+			naiveDimensions: true,
+			stopInertiaOnNavigate: true,
+		})
+
+		return () => {
+			lenis.destroy()
+		}
+	}, [])
 
 	return (
 		<>

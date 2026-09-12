@@ -1,79 +1,105 @@
-.eligibility-section {
-	padding: 0 4rem;
+.page-4 {
+	display: flex;
+	align-items: flex-end;
+	margin-top: 6rem;
 }
 
-.eligibility-heading {
-	font-family: 'Clash Display', sans-serif;
+.page-4-title-wrapper {
+	align-self: stretch;
+	width: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 400px;
+	overflow-x: clip;
 }
 
-.eligibility-copy,
-.preference-card p {
-	font-family: 'Inter', sans-serif;
+.page-4-title-content {
+	position: relative;
+	margin-right: 6rem;
+	margin-top: 5rem;
+}
+
+.page-4-title-content h2 {
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+	animation: updown-sm 4s cubic-bezier(0.42, 0, 0.34, 1.03) infinite alternate-reverse;
+}
+
+.page-4-title-image {
+	width: 550px;
+	position: absolute;
+	bottom: -170px;
+	left: -60px;
+	z-index: -1;
+	animation: scale 5s cubic-bezier(0.42, 0, 0.45, 0.86) infinite alternate-reverse;
+}
+
+.page-4-content {
+	height: fit-content;
+	width: 50%;
+	padding: 4.5rem 6.25rem;
+	background: linear-gradient(180deg, rgba(74, 244, 142, 0) 0%, #2bc995 100%);
+	background-size: 100% 70%;
+	background-repeat: no-repeat;
+	background-position: bottom;
+}
+
+.page-4-content p {
+	margin-bottom: 2rem;
+	color: rgba(255, 255, 255, 0.95);
+	font-size: 1.125rem;
+}
+
+@media (max-width: 1220px) {
+	.page-4-content {
+		padding: 4rem 4rem;
+	}
 }
 
 @media (max-width: 1024px) {
-	.eligibility-section {
-		padding: 0 3rem;
+	.page-4-content {
+		padding: 2rem 3rem;
+	}
+	.page-4-content p {
+		font-size: 1.15rem;
 	}
 }
-
-@media (max-width: 768px) {
-	.eligibility-section {
-		padding: 0 2rem;
+@media screen and (max-width: 768px) {
+	.page-4 {
+		flex-direction: column-reverse;
+		margin-top: -0.5rem;
+	}
+	.page-4-content {
+		width: 100%;
+		padding: 3rem 2rem;
+	}
+	.page-4-title-wrapper {
+		width: 100%;
+		height: 270px;
+	}
+	.page-4-title-content {
+		height: 80%;
+		margin-top: 0;
+	}
+	.text-eligibility {
+		justify-content: center;
+		display: flex;
+		position: relative;
+		top: 12rem;
+		left: 0.5rem;
+	}
+	.page-4-title-image {
+		position: relative;
+		left: 10rem;
+		top: -12rem;
+	}
+	.page-4-content p {
+		font-size: 1rem;
+		min-width: 300px;
+		width: 80%;
+		max-width: 420px;
+	}
+	.page-4-content p:last-child {
+		margin-bottom: 0px;
 	}
 }
-
-@media (max-width: 550px) {
-	.eligibility-section {
-		padding: 0 1rem;
-	}
-}
-
-/* Two-tone gradient text for "Eligibility" (Gold to Chrome Silver) */
-.title-metallic-gradient {
-	background: linear-gradient(
-		95deg,
-		#f8d57e 0%,
-		#e5a93b 25%,
-		#d1972a 44%,
-		#d3d7de 58%,
-		#f5f7fa 75%,
-		#b2b8c2 98%
-	);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	filter: drop-shadow(0 2px 18px rgba(229, 169, 59, 0.28));
-}
-
-/* Subtle background grid pattern */
-.cyber-grid {
-	background-size: 38px 38px;
-	background-image: 
-		linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-}
-
-/* Fine dot matrix for top-right */
-.dot-matrix {
-	background-image: radial-gradient(rgba(229, 184, 66, 0.22) 1.2px, transparent 1.2px);
-	background-size: 16px 16px;
-}
-
-/* Soft glowing pedestal lights */
-.pedestal-glow {
-	background: radial-gradient(ellipse at 50% 60%, rgba(240, 186, 68, 0.35) 0%, rgba(200, 140, 30, 0.12) 48%, transparent 72%);
-}
-
-/* Sleek golden glass card */
-.preference-card {
-	background: linear-gradient(135deg, rgba(229, 184, 66, 0.06) 0%, rgba(16, 16, 20, 0.72) 100%);
-	border: 1px solid rgba(229, 184, 66, 0.32);
-	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(246, 211, 101, 0.2);
-	backdrop-filter: blur(12px);
-}
-
-/* 3D Hexagon & Podium shadows */
-.hexagon-shadow {
-	filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 35px rgba(229, 170, 50, 0.25));
-}
-

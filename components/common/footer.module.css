@@ -1,14 +1,11 @@
 .footer {
-	background: #070707;
+	background: #000000;
 
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	box-shadow: 0px 0px 24px -6px rgba(255, 179, 71, 0.25);
-	border-top: 1px solid rgba(255, 255, 255, 0.05);
+	box-shadow: 0px 0px 16px -6px #e6bf40;
 }
-
-
 
 .footer-top {
 	display: flex;
@@ -18,35 +15,8 @@
 	padding-bottom: 2rem;
 }
 
-.footer-brand {
-	display: flex;
-	flex-direction: column;
-	gap: 0.75rem;
-}
-
-.footer-college {
-	font-family: 'Inter', sans-serif;
-	font-size: 0.85rem;
-	color: rgba(255, 255, 255, 0.7);
-	line-height: 1.4;
-	margin: 0;
-}
-
-.footer-subtext {
-	font-size: 0.85rem;
-	font-weight: 600;
-	color: #ffb347;
-	letter-spacing: 0.04em;
-}
-
-.footer-links-group {
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-}
-
 .footer-logo {
-	height: 48px;
+	height: 63px;
 	width: auto;
 	cursor: pointer;
 	display: block;
@@ -55,7 +25,6 @@
 
 .footer-logo:hover {
 	opacity: 0.95;
-	transform: scale(1.02);
 }
 
 .social-links {
@@ -113,7 +82,7 @@
 }
 
 .external-icon {
-	color: #E4B82A;
+	color: #e4b82a;
 	font-size: 1.1rem;
 	transition: transform 0.2s ease;
 }

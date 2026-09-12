@@ -33,8 +33,8 @@ export default function Nav() {
 	}
 
 	return (
-		<header className={`${styles.navbarWrapper} ${scrolled ? styles.navbarScrolled : ''}`}>
-			<nav className={styles.navbar}>
+        <header className={`${styles.navbarWrapper} ${scrolled ? styles.navbarScrolled : ''}`}>
+            <nav className={styles.navbar}>
 				<div className={styles['logo-wrapper']}>
 					<button
 						className={styles['menu-icon-btn']}
@@ -43,41 +43,49 @@ export default function Nav() {
 					>
 						<BiMenu className={styles['menu-icon']} />
 					</button>
-					<Link href='/'>
-						<a className={styles['logo-link']}>
-							<img src='/images/tathva26-gold.png' alt="Tathva '26" className={styles['nav-logo']} />
-						</a>
-					</Link>
+					<Link href='/' className={styles['logo-link']}>
+
+                        <img src='/images/tathva26-gold.png' alt="Tathva '26" className={styles['nav-logo']} />
+
+                    </Link>
 				</div>
 
 				<div className={styles['nav-center']}>
 					<ul className={styles['nav-links']}>
 						<li>
-							<Link href='/'>
-								<a className={`${styles['nav-link']} ${router.pathname === '/' ? styles.active : ''}`}>
+							<Link
+                                href='/'
+                                className={`${styles['nav-link']} ${router.pathname === '/' ? styles.active : ''}`}>
+								
 									Home
-								</a>
+								
 							</Link>
 						</li>
 						<li>
-							<Link href='/rewards'>
-								<a className={`${styles['nav-link']} ${router.pathname === '/rewards' ? styles.active : ''}`}>
+							<Link
+                                href='/rewards'
+                                className={`${styles['nav-link']} ${router.pathname === '/rewards' ? styles.active : ''}`}>
+								
 									Rewards
-								</a>
+								
 							</Link>
 						</li>
 						<li>
-							<Link href='/leaderboard'>
-								<a className={`${styles['nav-link']} ${router.pathname === '/leaderboard' ? styles.active : ''}`}>
+							<Link
+                                href='/leaderboard'
+                                className={`${styles['nav-link']} ${router.pathname === '/leaderboard' ? styles.active : ''}`}>
+								
 									Leaderboard
-								</a>
+								
 							</Link>
 						</li>
 						<li>
-							<Link href='/contact'>
-								<a className={`${styles['nav-link']} ${router.pathname === '/contact' ? styles.active : ''}`}>
+							<Link
+                                href='/contact'
+                                className={`${styles['nav-link']} ${router.pathname === '/contact' ? styles.active : ''}`}>
+								
 									Contact
-								</a>
+								
 							</Link>
 						</li>
 					</ul>
@@ -105,7 +113,7 @@ export default function Nav() {
 
 				<Menu show={showMenu} onClose={() => setShowMenu(false)} />
 			</nav>
-		</header>
-	)
+        </header>
+    );
 }
 

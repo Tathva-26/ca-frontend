@@ -10,16 +10,13 @@ export default function Footer() {
 		<footer className={styles['footer']}>
 			<div className='container'>
 				<div className={styles['footer-top']}>
-					<div className={styles['footer-brand']}>
-						<Link href='/'>
-							<img className={styles['footer-logo']} src='/images/tathva26-gold.png' alt="Tathva '26" />
-						</Link>
-						<p className={styles['footer-college']}>
-							National Institute of Technology Calicut<br />
-							<span className={styles['footer-subtext']}>Campus Ambassador Network • Tathva &apos;26</span>
-						</p>
-					</div>
-
+					<Link href='/'>
+						<img
+							className={styles['footer-logo']}
+							src='/images/tathva26-gold.png'
+							alt="Tathva '26"
+						/>
+					</Link>
 					<div className={styles['social-links']}>
 						<a
 							className={styles['social-btn']}
@@ -53,27 +50,18 @@ export default function Footer() {
 						</a>
 					</div>
 				</div>
-
 				<div className={styles['footer-divider']}></div>
-
 				<div className={styles['footer-bottom']}>
-					<p className={styles['footer-copy']}>
-						&#169; {new Date().getFullYear()} Tathva, NIT Calicut. All rights reserved.
-					</p>
-					<div className={styles['footer-links-group']}>
-						<Link href='/contact'>
-							<a className={styles['footer-link']}>Support & Contact</a>
-						</Link>
-						<a
-							className={styles['footer-link']}
-							href='https://tathva.org/'
-							target='_blank'
-							rel='noreferrer noopener'
-						>
-							<span>Tathva Main Site</span>
-							<HiOutlineExternalLink className={styles['external-icon']} />
-						</a>
-					</div>
+					<p className={styles['footer-copy']}>&#169; Tathva {new Date().getFullYear()}</p>
+					<a
+						className={styles['footer-link']}
+						href='https://tathva.org/'
+						target='_blank'
+						rel='noreferrer noopener'
+					>
+						<span>Tathva</span>
+						<HiOutlineExternalLink className={styles['external-icon']} />
+					</a>
 				</div>
 			</div>
 		</footer>
