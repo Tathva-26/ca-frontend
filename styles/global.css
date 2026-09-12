@@ -73,10 +73,16 @@ button:active {
 }
 
 .btn-outline {
-	border: 1px solid rgba(255, 255, 255, 0.15) !important;
-	color: #ffffff !important;
-	background: rgba(255, 255, 255, 0.03) !important;
-	backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: #fff;
+	background: none;
+	padding-bottom: 1.08rem;
+	transition: all 0.3s ease;
+}
+.btn-outline:hover {
+	background: #ffffff;
+	border-color: #ffffff;
+	color: #000000;
 }
 .btn-outline:hover {
 	border-color: rgba(255, 179, 71, 0.6) !important;

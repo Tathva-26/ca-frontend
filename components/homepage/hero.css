@@ -38,8 +38,9 @@
 .hero-telemetry-strip {
 	display: flex;
 	align-items: center;
-	gap: 0.75rem;
-	flex-wrap: wrap;
+	width: 100%;
+	position: relative;
+	line-height: 1.25;
 }
 
 .hero-status-pill {
@@ -86,13 +87,22 @@
 }
 
 .hero-tagline {
-	font-family: 'Clash Display', sans-serif;
-	font-size: clamp(1.25rem, 2.2vw, 1.85rem);
-	font-weight: 600;
-	letter-spacing: -0.01em;
-	color: #FFB347;
-	margin: 0;
-	text-transform: uppercase;
+	font-size: 1.25rem;
+	color: rgba(255, 255, 255, 0.7);
+	margin: 1rem 0 1.5rem 0;
+	min-height: 1.75rem;
+}
+.typewriter-cursor {
+	display: inline-block;
+	margin-left: 4px;
+	color: #a855f7;
+	font-weight: 400;
+	animation: typewriter-blink 0.8s infinite;
+}
+
+@keyframes typewriter-blink {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0; }
 }
 
 .hero-description {
@@ -283,17 +293,13 @@
 		text-align: center;
 		gap: 2rem;
 	}
-
-	.hero-left {
-		display: contents;
+	.deadline-timer {
+		padding: 10px 20px;
 	}
-
-	.hero-header {
-		order: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.75rem;
+	.hero {
+		background-image: url('/images/hero-desktop.png');
+		background-size: 500px auto;
+		background-position: right center;
 	}
 
 	.hero-right {
@@ -306,17 +312,10 @@
 		margin: 0.5rem 0;
 	}
 
-	.asteria-stage {
-		max-width: 380px;
-	}
-
-	.asteria-img {
-		max-width: 320px;
-	}
-
-	.asteria-telemetry-badge {
-		right: 10%;
-		bottom: 1rem;
+@media (max-width: 768px) {
+	.hero {
+		/* background-image: url('/images/hero-desktop.png'); */
+		background-image: none;
 	}
 
 	.hero-description {
@@ -337,14 +336,17 @@
 	}
 }
 
-@media (max-width: 640px) {
-	.hero {
-		padding-top: 5rem;
-		padding-bottom: 2.5rem;
-	}
 
-	.hero-container {
-		gap: 1.5rem;
+@media (max-width: 550px) {
+	.hero {
+		background-image: url('/images/hero-desktop.png');
+		background-size: 100% auto;
+		background-position: center 50px;
+		justify-content: flex-end;
+		line-height: 4;
+	}
+	.hero-text container {
+		line-height: 3;
 	}
 
 	.hero-header {
@@ -381,4 +383,60 @@
 	.asteria-telemetry-badge {
 		display: none;
 	}
+	.deadline-timer {
+		padding: 3px 6px;
+	}
+	.hero-arrow {
+		display: inline-block;
+		width: 40px;
+		margin: 0 auto;
+		margin-bottom: 0 rem;
+	}
 }
+@media (max-width: 380px) {
+	.hero-text {
+		margin-bottom: 3.75rem;
+	}
+	
+}
+.deadline-timer {
+  margin: 24px 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  width: fit-content;
+  max-width: 100%;
+  text-align: left;
+  margin-left: 0;
+}
+
+.deadline-timer:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+.deadline-timer:hover span,
+.deadline-timer:hover strong {
+  color: #000000;
+}
+
+.deadline-timer strong {
+  color: #a855f7;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+/* If the .hero-text container itself has padding that pushes content,
+   you might need to adjust margin on the .deadline-timer or its parent.
+   Based on the image, margin-left: 0 should work to align it with "Campus Ambassador".
+*/

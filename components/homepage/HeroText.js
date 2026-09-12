@@ -11,6 +11,41 @@ const HeroText = () => {
 	const router = useRouter()
 	const { isLoggedIn } = useUserContext()
 	const [timeLeft, setTimeLeft] = useState(0)
+	const [displayedTagline, setDisplayedTagline] = useState('')
+	const fullTagline = 'Be the emissary of Tathva 2026'
+
+	useEffect(() => {
+		let index = 0
+		let isDeleting = false
+		let timeoutId = null
+
+		const type = () => {
+			if (!isDeleting) {
+				if (index <= fullTagline.length) {
+					setDisplayedTagline(fullTagline.substring(0, index))
+					index++
+					timeoutId = setTimeout(type, 70)
+				} else {
+					isDeleting = true
+					timeoutId = setTimeout(type, 2000) // Pause after full text typed
+				}
+			} else {
+				if (index >= 0) {
+					setDisplayedTagline(fullTagline.substring(0, index))
+					index--
+					timeoutId = setTimeout(type, 35) // Fast backspace
+				} else {
+					isDeleting = false
+					index = 0
+					timeoutId = setTimeout(type, 500) // Pause before typing again
+				}
+			}
+		}
+
+		type()
+
+		return () => clearTimeout(timeoutId)
+	}, [])
 
 	useEffect(() => {
 		// Set the target date to the end of today (Oct 4, 2025, 23:59:59)
@@ -57,7 +92,10 @@ const HeroText = () => {
 				Campus <br />
 				Ambassador
 			</h1>
-			<p className='hero-tagline'>Be the emissary of Tathva 2026</p>
+			<p className='hero-tagline'>
+				{displayedTagline}
+				<span className='typewriter-cursor'>|</span>
+			</p>
 
 			{/* --- START: New countdown element --- */}
 			<div className='deadline-timer'>

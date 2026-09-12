@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useUserContext } from 'context/UserContext'
 import { useRouter } from 'next/router'
 import CountUp from 'react-countup'
@@ -7,6 +8,41 @@ import 'react-toastify/dist/ReactToastify.css'
 const HeroText = () => {
   const router = useRouter()
   const { isLoggedIn } = useUserContext()
+  const [displayedTagline, setDisplayedTagline] = useState('')
+  const fullTagline = 'Be the emissary of Tathva 2026'
+
+  useEffect(() => {
+    let index = 0
+    let isDeleting = false
+    let timeoutId = null
+
+    const type = () => {
+      if (!isDeleting) {
+        if (index <= fullTagline.length) {
+          setDisplayedTagline(fullTagline.substring(0, index))
+          index++
+          timeoutId = setTimeout(type, 70)
+        } else {
+          isDeleting = true
+          timeoutId = setTimeout(type, 2000) // Pause after full text typed
+        }
+      } else {
+        if (index >= 0) {
+          setDisplayedTagline(fullTagline.substring(0, index))
+          index--
+          timeoutId = setTimeout(type, 35) // Fast backspace
+        } else {
+          isDeleting = false
+          index = 0
+          timeoutId = setTimeout(type, 500) // Pause before typing again
+        }
+      }
+    }
+
+    type()
+
+    return () => clearTimeout(timeoutId)
+  }, [])
 
   const handleSignUp = () => {
     if (isLoggedIn) {
@@ -24,7 +60,10 @@ const HeroText = () => {
         Campus <br />
         Ambassador
       </h1>
-      <p className='hero-tagline'>Be the emissary of Tathva 2026</p>
+      <p className='hero-tagline'>
+        {displayedTagline}
+        <span className='typewriter-cursor'>|</span>
+      </p>
       <div className='hero-cta-wrapper'>
         <button onClick={handleSignUp} className='btn-primary'>
           {isLoggedIn ? 'Go to Dashboard' : 'Sign up'}

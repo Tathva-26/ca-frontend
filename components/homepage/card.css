@@ -78,6 +78,7 @@
 
 .card .ringed-icon {
 	background: transparent;
+	cursor: pointer;
 }
 
 .card .ringed-icon .ring
@@ -89,10 +90,23 @@
 /* .card .ringed-icon .ring, */
 .card .ringed-icon .icon-wrapper {
 	background: linear-gradient(45deg, #a37b19, #f6d365 50%, #c59a27);
+	transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card .ringed-icon .icon-wrapper > * {
 	filter: invert(1);
+	color: #000;
+	transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card .ringed-icon:hover .icon-wrapper {
+	background: #000000;
+	border: 2px solid #f6d365;
+}
+
+.card .ringed-icon:hover .icon-wrapper > * {
+	filter: none;
+	color: #f6d365;
 }
 
 .card .ringed-icon .ring {
