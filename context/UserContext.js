@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
-const UserContext = createContext()
+const UserContext = createContext({})
 
 export default function UserContextWrapper({ children }) {
 	const router = useRouter()
@@ -46,11 +46,9 @@ export default function UserContextWrapper({ children }) {
 				branch: data?.branch || '',
 				year: data?.year || '',
 				experience: data?.experience || false,
-				// name: data?.name,
-				// email: data?.email,
-				// refCode: data?.refCode || data?.ref_code,
-				// points: data?.totalPoints || data?.total_points || 0,
-				imageUrl: `https://source.boringavatars.com/beam/120/${data?.email}?colors=CAF729,79DD7E,2ECBAA,21B6B6,888DDA`,
+				refCode: data?.refCode || data?.ref_code || '',
+				points: Number(data?.totalPoints ?? data?.total_points ?? data?.points ?? 0),
+				imageUrl: `https://source.boringavatars.com/beam/120/${data?.email}?colors=FF6A00,FF8A00,FFB347,111111,FFFFFF`,
 			}
 
 			setUser(currentUser)
@@ -233,5 +231,5 @@ export default function UserContextWrapper({ children }) {
 }
 
 export function useUserContext() {
-	return useContext(UserContext)
+	return useContext(UserContext) || {}
 }

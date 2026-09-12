@@ -1,14 +1,8 @@
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { IoMdClose } from 'react-icons/io'
-import { signOut } from 'lib/firebase'
-import { toast } from 'react-toastify'
-import { useEffect, useState } from 'react'
 import { useUserContext } from 'context/UserContext'
 
-export default function SideNav({ userDb, points, onClose }) {
-	const router = useRouter()
-	const { user, logout } = useUserContext()
+export default function SideNav({ onClose }) {
+	const { user } = useUserContext()
 
 	return (
 		<div className='side-nav'>
@@ -19,49 +13,7 @@ export default function SideNav({ userDb, points, onClose }) {
 				<div className='user-avatar' style={{ backgroundImage: `url(${user?.imageUrl})` }}></div>
 				<h3 className='user-name'>{user?.name || '--'}</h3>
 				<span className='user-email'>{user?.email}</span>
-				{/* <p className='user-points'>
-					{Number.isInteger(parseInt(user?.points)) ? user?.points : '--'} Points
-				</p> */}
-				{/* <br /> */}
-				{/* <div className='referral-code'>
-					<div className='code'>REF</div>
-					<div>{user?.refCode || '--'}</div>
-				</div> */}
 			</div>
-
-			{/* <div className='edit-profile-button-wrapper'>
-				<Link href='/register?editprofile=true'>
-					<button className='btn-outline'>Edit profile</button>
-				</Link>
-			</div> */}
-
-			{/* <ul className='side-nav-links' onClick={onClose}>
-				<Link href='/dashboard/posters'>
-					<a className={router.pathname === '/dashboard/posters' ? 'active' : ''}>
-						<img src='/images/posters.png' alt='🌁' /> Posters
-					</a>
-				</Link>
-				<Link href='/dashboard/referrals'>
-					<a className={router.pathname === '/dashboard/referrals' ? 'active' : ''}>
-						<img src='/images/referrals.png' alt='🎫' /> Referals
-					</a>
-				</Link>
-				<Link href='/dashboard/feedback'>
-					<a className={router.pathname === '/dashboard/feedback' ? 'active' : ''}>
-						<img src='/images/feedback.png' alt='✍️' /> Feedback
-					</a>
-				</Link>
-				<Link href='/dashboard/whatsapp'>
-					<a className={router.pathname === '/dashboard/whatsapp' ? 'active' : ''}>
-						<img src='/images/whatsapp.png' alt='✅' /> Whatsapp
-					</a>
-				</Link>
-				<Link href='#'>
-					<a onClick={logout}>
-						<img src='/images/door.png' alt='🚪' /> Logout
-					</a>
-				</Link>
-			</ul> */}
 			<div className='spacerv-md'></div>
 		</div>
 	)

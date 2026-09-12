@@ -1,8 +1,6 @@
-import Image from 'next/image'
-
 export default function Benefits() {
 	return (
-		<div className='benefits'>
+		<div className='benefits' id='benefits'>
 			<div className='benefits-image-container'>
 				<div className='benefits-image-wrapper'>
 					<img src='/images/benefits.svg' alt='Benefits pentagon' className='benefits-image' />
@@ -43,6 +41,3 @@ export default function Benefits() {
 		</div>
 	)
 }
-
-
-

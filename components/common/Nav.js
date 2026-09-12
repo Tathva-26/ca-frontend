@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { BiMenu } from 'react-icons/bi'
 import { useUserContext } from 'context/UserContext'
 import Menu from 'components/common/Menu'
@@ -8,69 +9,103 @@ import styles from './nav.module.css'
 export default function Nav() {
 	const { isLoggedIn, user } = useUserContext()
 	const [showMenu, setShowMenu] = useState(false)
+	const [scrolled, setScrolled] = useState(false)
+	const router = useRouter()
+
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 20) {
+				setScrolled(true)
+			} else {
+				setScrolled(false)
+			}
+		}
+		window.addEventListener('scroll', handleScroll)
+		return () => window.removeEventListener('scroll', handleScroll)
+	}, [])
 
 	const handleSignInOrDashboard = () => {
 		if (!isLoggedIn) {
-			// Redirect to login page
-			window.location.href = '/login'
+			router.push('/login')
 		} else {
-			// Redirect to dashboard
-			window.location.href = '/dashboard/profile'
+			router.push('/dashboard/profile')
 		}
 	}
 
 	return (
-		<nav className={styles.navbar}>
-			<div className={styles['logo-wrapper']}>
-				<BiMenu className={styles['menu-icon']} onClick={() => setShowMenu(true)} />
-				<Link href='/'>
-					<img src='/images/logoNew.png' alt='Tathva 2026' className={styles['nav-logo']} />
-				</Link>
-			</div>
+		<header className={`${styles.navbarWrapper} ${scrolled ? styles.navbarScrolled : ''}`}>
+			<nav className={styles.navbar}>
+				<div className={styles['logo-wrapper']}>
+					<button
+						className={styles['menu-icon-btn']}
+						onClick={() => setShowMenu(true)}
+						aria-label='Open Navigation Menu'
+					>
+						<BiMenu className={styles['menu-icon']} />
+					</button>
+					<Link href='/'>
+						<a className={styles['logo-link']}>
+							<img src='/images/tathva26-gold.png' alt="Tathva '26" className={styles['nav-logo']} />
+						</a>
+					</Link>
+				</div>
 
-			<div className={styles['nav-right']}>
-				<ul className={styles['nav-links']}>
-					<li>
-						<Link href='/' className={styles['nav-text']}>
-							Home
-						</Link>
-					</li>
-					<li>
-						<Link href='/leaderboard' className={styles['nav-text']}>
-							Leaderboard
-						</Link>
-					</li>
-					<li>
-						<Link href='/contact' className={styles['nav-text']}>
-							Contact
-						</Link>
-					</li>
-					<li>
-						{!isLoggedIn ? (
-							<div className={styles['sign-in-desktop']} onClick={handleSignInOrDashboard}>
-								Sign in
+				<div className={styles['nav-center']}>
+					<ul className={styles['nav-links']}>
+						<li>
+							<Link href='/'>
+								<a className={`${styles['nav-link']} ${router.pathname === '/' ? styles.active : ''}`}>
+									Home
+								</a>
+							</Link>
+						</li>
+						<li>
+							<Link href='/rewards'>
+								<a className={`${styles['nav-link']} ${router.pathname === '/rewards' ? styles.active : ''}`}>
+									Rewards
+								</a>
+							</Link>
+						</li>
+						<li>
+							<Link href='/leaderboard'>
+								<a className={`${styles['nav-link']} ${router.pathname === '/leaderboard' ? styles.active : ''}`}>
+									Leaderboard
+								</a>
+							</Link>
+						</li>
+						<li>
+							<Link href='/contact'>
+								<a className={`${styles['nav-link']} ${router.pathname === '/contact' ? styles.active : ''}`}>
+									Contact
+								</a>
+							</Link>
+						</li>
+					</ul>
+				</div>
+
+				<div className={styles['nav-right']}>
+					{!isLoggedIn ? (
+						<button onClick={handleSignInOrDashboard} className={styles['sign-in-btn']}>
+							<span>Sign in</span>
+							<span className={styles['btn-arrow']}>→</span>
+						</button>
+					) : (
+						<div className={styles['user-pill']} onClick={handleSignInOrDashboard} title='Open Profile'>
+							<div
+								className={styles.avatar}
+								style={{ backgroundImage: `url(${user?.imageUrl || '/images/tathva-white.png'})` }}
+							/>
+							<div className={styles['user-meta']}>
+								<span className={styles['user-name']}>{user?.name?.split(' ')[0] || 'Ambassador'}</span>
+								<span className={styles['user-points']}>{user?.points ?? 0} PTS</span>
 							</div>
-						) : (
-							<div className={styles['sign-out-desktop']} onClick={handleSignInOrDashboard}>
-								<div
-									className={styles.avatar}
-									style={{ backgroundImage: `url(${user?.imageUrl})` }}
-								/>
-							</div>
-						)}
-					</li>
-				</ul>
+						</div>
+					)}
+				</div>
 
-				{!isLoggedIn ? (
-					<div className={styles['sign-in-mobile']} onClick={handleSignInOrDashboard}>
-						Sign in
-					</div>
-				) : (
-					<div onClick={handleSignInOrDashboard}>Profile</div>
-				)}
-			</div>
-
-			<Menu show={showMenu} onClose={() => setShowMenu(false)} />
-		</nav>
+				<Menu show={showMenu} onClose={() => setShowMenu(false)} />
+			</nav>
+		</header>
 	)
 }
+

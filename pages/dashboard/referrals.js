@@ -39,10 +39,10 @@ export default function Referals() {
 				<div className='spacerv-sm'></div>
 
 				<div className='referrals-points'>
-					<h4>Points per Person</h4>
+					<h4>Points per referral</h4>
 					<p>
-						Refer friends to Tathva events, workshops and lectures using your unique referrel code
-						to receive points
+						Refer friends to Tathva events, workshops and lectures using your unique referral code
+						to earn points.
 					</p>
 					<table>
 						<tbody>

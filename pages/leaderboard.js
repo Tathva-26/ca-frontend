@@ -1,60 +1,120 @@
 import { useState, useEffect } from 'react'
-import PageHeader from 'components/common/PageHeader'
-import RUReady from 'components/common/RUReady'
-import styles from 'components/leaderboard/leaderboard.module.css'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useUserContext } from 'context/UserContext'
+import FinalCTA from 'components/homepage/FinalCTA'
 
 export default function Leaderboard() {
+	const { user } = useUserContext()
 	const [leaderboard, setLeaderboard] = useState([])
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
 		fetch('https://api.tathva.org/api/leaderboard')
-			.then((res) => res.json())
-			.then((data) => {
-				// Sort by points descending and take top 50
-				const sorted = data.sort((a, b) => b.count - a.count).slice(0, 50)
-				setLeaderboard(sorted)
+			.then((res) => {
+				if (!res.ok) throw new Error('Network response not ok')
+				return res.json()
 			})
-			.catch((err) => console.error('Error fetching leaderboard:', err))
+			.then((data) => {
+				if (Array.isArray(data)) {
+					const sorted = data.sort((a, b) => (b.count || 0) - (a.count || 0)).slice(0, 50)
+					setLeaderboard(sorted)
+				}
+			})
+			.catch((err) => console.log('Leaderboard API fetch notice:', err?.message || err))
 			.finally(() => setLoading(false))
 	}, [])
 
+	const maxPoints = leaderboard.length > 0 ? (leaderboard[0].count || 1) * 10 : 1000
+
 	return (
 		<>
-			<PageHeader title='Leaderboard' icon='/images/leaderboard.png' />
-			<div className='container'>
-				<div className={styles['leaderboard']}>
-					{loading ? (
-						<div className={styles['empty']}>Loading...</div>
-					) : leaderboard.length ? (
-						<div className={styles['participants-wrapper']}>
-							<div className={styles['participants-header']}>
-								<span className={styles['p-rank']}>Rank</span>
-								<span className={styles['p-name']}>Name</span>
-								<span className={styles['p-points']}>Points</span>
+			<Head>
+				<title>Leaderboard · Tathva &apos;26</title>
+			</Head>
+
+			<div style={{ paddingTop: '7rem', minHeight: '80vh', backgroundColor: '#050505' }}>
+				<div className='container'>
+					<div style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+						<span className='section-label'>Live standings</span>
+						<h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
+							Campus Ambassador <span className='text-gradient-gold'>Leaderboard</span>
+						</h1>
+						<p style={{ maxWidth: '700px', fontSize: '1.1rem', color: 'rgba(255, 255, 255, 0.7)' }}>
+							Colleges ranked by verified points. The top 20 ambassadors qualify for the ₹25,000+
+							prize pool and NIT Calicut certificates.
+						</p>
+					</div>
+
+					<div className='leaderboard-editorial-card' style={{ marginBottom: '5rem' }}>
+						<div className='leaderboard-meta-strip'>
+							<span>Rank & campus</span>
+							<span>Points</span>
+						</div>
+
+						{loading ? (
+							<div className='leaderboard-empty-msg'>
+								<span>Loading…</span>
 							</div>
-							{leaderboard.map((item, index) => (
-								<Participant key={index} rank={index + 1} name={item.name} points={item.count} />
-							))}
-						</div>
-					) : (
-						<div className={`${styles['empty']} ${styles['empty-leaderboard']}`}>
-							No data available
-						</div>
-					)}
+						) : leaderboard.length > 0 ? (
+							<div className='standings-list'>
+								{leaderboard.map((item, index) => {
+									const rank = index + 1
+									const rankStr = rank < 10 ? `0${rank}` : `${rank}`
+									const points = (item.count || 0) * 10
+									const percent = Math.min(100, Math.max(12, Math.round((points / maxPoints) * 100)))
+									const isUser = Boolean(
+										user &&
+											((item.name && user.name && item.name.toLowerCase() === user.name.toLowerCase()) ||
+												(item.tathvaId && user.tathvaId && item.tathvaId === user.tathvaId))
+									)
+
+									return (
+										<div
+											key={index}
+											className={`standing-item ${isUser ? 'standing-item-user' : ''}`}
+										>
+											<div className='standing-row-top'>
+												<div className='standing-left'>
+													<span className='standing-rank-num'>{rankStr}</span>
+													<div className='standing-name-block'>
+<span className='standing-name'>
+														{item.name || `Ambassador ${rankStr}`}
+														{isUser && <span className='standing-user-badge'>You</span>}
+													</span>
+														{item.college && <span className='standing-college'>{item.college}</span>}
+													</div>
+												</div>
+
+												<div className='standing-right'>
+													<span className='standing-points-val'>{points}</span>
+													<span className='standing-points-unit'>points</span>
+												</div>
+											</div>
+
+											<div className='standing-line-track'>
+												<div className='standing-line-fill' style={{ width: `${percent}%` }}></div>
+											</div>
+										</div>
+									)
+								})}
+							</div>
+						) : (
+							<div className='leaderboard-empty-msg'>
+								<span>Standings will appear here once registrations open.</span>
+								{user && (
+									<div style={{ marginTop: '1rem', color: '#FFB347' }}>
+										Your points: <strong>{user.points || 0}</strong>
+									</div>
+								)}
+							</div>
+						)}
+					</div>
 				</div>
+
+				<FinalCTA />
 			</div>
-			<RUReady />
 		</>
 	)
 }
 
-function Participant({ rank, name, points }) {
-	return (
-		<div className={styles['participant']}>
-			<span className={styles['p-rank']}>{rank}</span>
-			<span className={styles['p-name']}>{name}</span>
-			<span className={styles['p-points']}>{points * 10}</span>
-		</div>
-	)
-}

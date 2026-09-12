@@ -1,0 +1,127 @@
+.container {
+	position: relative;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8rem 1.5rem 4rem 1.5rem;
+	background-color: #050505;
+	overflow: hidden;
+}
+
+.stack {
+	position: relative;
+	z-index: 5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 1.25rem;
+	max-width: 620px;
+}
+
+.code {
+	font-family: 'Clash Display', sans-serif;
+	font-size: clamp(5rem, 14vw, 9rem);
+	font-weight: 700;
+	line-height: 1;
+	letter-spacing: -0.03em;
+	color: #ffd27a;
+}
+
+.overline {
+	font-size: 0.9rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	color: #ffb347;
+}
+
+.title {
+	font-family: 'Clash Display', sans-serif;
+	font-size: clamp(2rem, 4.5vw, 3.25rem);
+	font-weight: 700;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	color: #ffffff;
+	margin: 0;
+	text-wrap: balance;
+}
+
+.description {
+	font-family: 'Inter', sans-serif;
+	font-size: 1.05rem;
+	line-height: 1.65;
+	color: rgba(255, 255, 255, 0.65);
+	margin: 0;
+	max-width: 46ch;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.primaryBtn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.95rem 1.9rem;
+	border-radius: 9999px;
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	color: #050505;
+	background: #ffb347;
+	border: 1px solid rgba(255, 210, 122, 0.4);
+	box-shadow: 0 4px 25px rgba(255, 106, 0, 0.35);
+	text-decoration: none;
+	transition: transform 150ms ease-out, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.primaryBtn:hover {
+	background: #ffd27a;
+	box-shadow: 0 8px 35px rgba(255, 138, 0, 0.45);
+}
+
+.primaryBtn:active {
+	transform: scale(0.97);
+}
+
+.primaryBtn span:last-child {
+	transition: transform 0.2s ease;
+}
+
+.primaryBtn:hover span:last-child {
+	transform: translateX(4px);
+}
+
+.secondaryBtn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.95rem 1.6rem;
+	border-radius: 9999px;
+	font-size: 1rem;
+	font-weight: 600;
+	color: #ffffff;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(10px);
+	text-decoration: none;
+	transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease,
+		transform 150ms ease-out;
+}
+
+.secondaryBtn:hover {
+	border-color: rgba(255, 179, 71, 0.5);
+	background: rgba(255, 179, 71, 0.08);
+	color: #ffd27a;
+}
+
+.secondaryBtn:active {
+	transform: scale(0.97);
+}

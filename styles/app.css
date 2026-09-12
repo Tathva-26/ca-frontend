@@ -1,23 +1,29 @@
 :root {
-	--primary: linear-gradient(
-		298.74deg,
-		#e91dfb 7.67%,
-		#632dff 28.63%,
-		#359eff 61.36%,
-		#1bffe4 83.87%
-	);
-	--secondary: linear-gradient(277.9deg, #1f31d1 -5.62%, #2dc0ef 106.21%);
-	--circle-pri: linear-gradient(315deg, #cc01ff 0%, #7d3efe 44.79%, #37e7ff 100%);
-	--lines: linear-gradient(
-		90deg,
-		#ff68f9 0%,
-		#3f88ff 22.4%,
-		#52f5ff 53.12%,
-		#6486ff 76.04%,
-		#fd8bff 100%
-	);
+	--bg-base: #050505;
+	--bg-surface: #0c0c0c;
+	--bg-surface-elevated: #141414;
+	--card-bg: #111111;
+	--card-border: rgba(255, 255, 255, 0.08);
+	--card-border-hover: rgba(255, 179, 71, 0.35);
 
-	--card-bg: #151515;
+	/* Warm Orange -> Amber -> Gold */
+	--accent-orange: #FF6A00;
+	--accent-amber: #FF8A00;
+	--accent-gold: #FFB347;
+	--accent-gold-light: #FFD27A;
+
+	--primary: #ffb347;
+	--primary-hover: #ffd27a;
+	--secondary: #ffb347;
+	--circle-pri: #ffb347;
+	--lines: linear-gradient(90deg, rgba(255, 106, 0, 0) 0%, rgba(255, 179, 71, 0.8) 50%, rgba(255, 210, 122, 0) 100%);
+	--gold-glow: 0 0 35px rgba(255, 138, 0, 0.22);
+	--gold-glow-subtle: 0 0 20px rgba(255, 179, 71, 0.15);
+
+	/* Semantic green */
+	--semantic-green: #10B981;
+	--semantic-green-subtle: rgba(16, 185, 129, 0.12);
+	--semantic-green-border: rgba(16, 185, 129, 0.35);
 }
 
 * {

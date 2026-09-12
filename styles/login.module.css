@@ -1,127 +1,172 @@
-/* Container */
+/* Login container — sits on the obsidian base */
 .container {
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(135deg, #1f1f1f 0%, #121212 100%);
-	padding: 20px;
+	background-color: #050505;
+	padding: 6rem 20px 3rem 20px;
 }
 
 /* Login card */
 .loginBox {
-	background: #1a1a1a;
-	border-radius: 16px;
+	position: relative;
+	background: #111111;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 18px;
 	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-	max-width: 450px;
+	max-width: 460px;
 	width: 100%;
-	padding: 40px;
-	color: #e2e8f0;
+	padding: 3rem 2.5rem;
+	color: rgba(255, 255, 255, 0.85);
 }
 
-/* Logo / Header */
+/* Overline eyebrow above the form */
+.overline {
+	display: block;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	color: #ffb347;
+	text-align: center;
+	margin-bottom: 0.75rem;
+}
+
 .logoSection {
 	text-align: center;
-	margin-bottom: 40px;
+	margin-bottom: 2.5rem;
 }
 
 .logo {
 	width: 120px;
 	height: auto;
-	margin-bottom: 20px;
-	filter: brightness(0) invert(1); /* Makes logo visible on dark background */
+	margin-bottom: 1.25rem;
 }
 
 .title {
-	font-size: 28px;
+	font-family: 'Clash Display', sans-serif;
+	font-size: 1.9rem;
 	font-weight: 700;
+	letter-spacing: -0.02em;
 	color: #ffffff;
-	margin: 0 0 8px 0;
+	margin: 0 0 0.5rem 0;
 }
 
 .subtitle {
-	font-size: 16px;
-	color: #a0aec0;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.95rem;
+	line-height: 1.55;
+	color: rgba(255, 255, 255, 0.6);
 	margin: 0;
+}
+
+/* Inline error state */
+.errorMessage {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.88rem;
+	line-height: 1.5;
+	color: #ff8a75;
+	background: rgba(255, 106, 0, 0.08);
+	border: 1px solid rgba(255, 138, 0, 0.3);
+	border-radius: 8px;
+	padding: 0.75rem 1rem;
+	margin-bottom: 1.5rem;
 }
 
 /* Form */
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
+	gap: 1.25rem;
 }
 
 .inputGroup {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 0.4rem;
 }
 
 .label {
-	font-size: 14px;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.8rem;
 	font-weight: 600;
-	color: #e2e8f0;
+	letter-spacing: 0.01em;
+	color: rgba(255, 255, 255, 0.7);
 }
 
 .input {
 	width: 100%;
-	padding: 12px 16px;
-	border: 2px solid #2d3748;
+	padding: 0.9rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.1);
 	border-radius: 8px;
-	font-size: 16px;
-	background-color: #121212;
-	color: #e2e8f0;
-	transition: all 0.2s;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.95rem;
+	background-color: rgba(255, 255, 255, 0.05);
+	color: #ffffff;
+	transition: border-color 200ms ease, box-shadow 200ms ease;
 	outline: none;
 }
 
-.input:focus {
-	border-color: #667eea;
-	box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+.input::placeholder {
+	color: rgba(255, 255, 255, 0.25);
 }
 
-.input::placeholder {
-	color: #718096;
+.input:hover {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.input:focus {
+	border-color: rgba(255, 179, 71, 0.6);
+	box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.18);
 }
 
 /* Forgot password */
 .forgotPassword {
 	text-align: right;
-	margin-top: -12px;
+	margin-top: -0.5rem;
 }
 
 .link {
-	color: #667eea;
-	font-size: 14px;
+	color: #ffb347;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.85rem;
 	font-weight: 600;
 	text-decoration: none;
-	transition: color 0.2s;
+	transition: color 0.2s ease;
 }
 
 .link:hover {
-	color: #764ba2;
-	text-decoration: underline;
+	color: #ffd27a;
 }
 
 /* Submit button */
 .submitButton {
 	width: 100%;
-	padding: 14px;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: white;
-	border: none;
-	border-radius: 8px;
-	font-size: 16px;
-	font-weight: 600;
+	padding: 0.95rem 1.5rem;
+	background: #ffb347;
+	color: #050505;
+	border: 1px solid rgba(255, 210, 122, 0.4);
+	border-radius: 9999px;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.98rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
 	cursor: pointer;
-	transition: all 0.3s;
-	margin-top: 8px;
+	transition: transform 150ms ease-out, background-color 150ms ease, box-shadow 150ms ease;
+	margin-top: 0.25rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
 }
 
 .submitButton:hover:not(:disabled) {
-	transform: translateY(-2px);
-	box-shadow: 0 10px 20px rgba(102, 126, 234, 0.5);
+	background: #ffd27a;
+	box-shadow: 0 8px 28px rgba(255, 106, 0, 0.4);
+}
+
+.submitButton:active:not(:disabled) {
+	transform: scale(0.97);
 }
 
 .submitButton:disabled {
@@ -131,27 +176,23 @@
 
 /* Footer */
 .footer {
-	margin-top: 32px;
+	margin-top: 1.75rem;
 	text-align: center;
 }
 
 .footerText {
-	color: #718096;
-	font-size: 14px;
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 0.9rem;
 	margin: 0;
 }
 
 /* Responsive */
 @media (max-width: 640px) {
 	.loginBox {
-		padding: 30px 20px;
+		padding: 2.25rem 1.5rem;
 	}
 
 	.title {
-		font-size: 24px;
-	}
-
-	.subtitle {
-		font-size: 14px;
+		font-size: 1.6rem;
 	}
 }

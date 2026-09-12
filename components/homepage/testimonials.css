@@ -1,0 +1,369 @@
+/* =============================================
+   TESTIMONIALS — Masonry Wall with Vertical Scroll
+   ============================================= */
+
+.testimonials-section {
+	position: relative;
+	padding: 3rem 0 0;
+	background-color: #050505;
+	overflow: hidden;
+}
+
+/* ---- Header ---- */
+.testimonials-header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin-bottom: 3rem;
+	text-align: center;
+	align-items: center;
+}
+
+.testimonials-overline {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #ffb347;
+}
+
+.testimonials-title {
+	font-family: 'Clash Display', sans-serif;
+	font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+	font-weight: 700;
+	line-height: 1.1;
+	color: #ffffff;
+	letter-spacing: -0.02em;
+	margin: 0;
+}
+
+.text-gold-solid {
+	color: #ffb347;
+}
+
+.testimonials-subtitle {
+	font-family: 'Inter', sans-serif;
+	font-size: 1rem;
+	color: rgba(255, 255, 255, 0.5);
+	line-height: 1.6;
+	margin: 0.25rem 0 0;
+	max-width: 520px;
+}
+
+/* ---- Masonry Wrapper (contains wall + fade masks) ---- */
+.testimonials-masonry-wrapper {
+	position: relative;
+	width: 100%;
+	height: 620px;
+	overflow: hidden;
+}
+
+/* ---- Masonry Wall Grid ---- */
+.testimonials-masonry-wall {
+	display: flex;
+	gap: 18px;
+	justify-content: center;
+	height: 100%;
+	padding: 0 1.5rem;
+}
+
+/* ---- Individual Column ---- */
+.masonry-column {
+	flex: 1;
+	max-width: 280px;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	will-change: transform;
+}
+
+.masonry-col-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	padding-bottom: 18px;
+}
+
+/* ---- Scroll Up Animation ---- */
+.masonry-col-scroll-up {
+	animation: scrollUp var(--scroll-duration, 36s) linear infinite;
+}
+
+@keyframes scrollUp {
+	0% {
+		transform: translateY(0);
+	}
+	100% {
+		transform: translateY(-50%);
+	}
+}
+
+/* ---- Scroll Down Animation ---- */
+.masonry-col-scroll-down {
+	animation: scrollDown var(--scroll-duration, 36s) linear infinite;
+}
+
+@keyframes scrollDown {
+	0% {
+		transform: translateY(-50%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+/* ---- Individual Card ---- */
+.masonry-card {
+	background: #0e0e0e;
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	border-radius: 14px;
+	padding: 1.5rem 1.35rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.15rem;
+	transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.masonry-card:hover {
+	border-color: rgba(255, 179, 71, 0.22);
+	background: #111111;
+}
+
+/* ---- Card Quote ---- */
+.masonry-card-quote {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.88rem;
+	line-height: 1.72;
+	color: rgba(255, 255, 255, 0.78);
+	margin: 0;
+}
+
+/* ---- Card Footer ---- */
+.masonry-card-footer {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: auto;
+}
+
+.masonry-card-avatar {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: rgba(255, 179, 71, 0.1);
+	border: 1px solid rgba(255, 179, 71, 0.3);
+	color: #ffd27a;
+	font-family: 'Clash Display', sans-serif;
+	font-size: 0.82rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.masonry-card-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+	min-width: 0;
+}
+
+.masonry-card-name {
+	font-family: 'Clash Display', sans-serif;
+	font-size: 0.88rem;
+	font-weight: 600;
+	color: #ffffff;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.masonry-card-college {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.75rem;
+	color: rgba(255, 255, 255, 0.45);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.masonry-card-year {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.7rem;
+	color: rgba(255, 179, 71, 0.6);
+}
+
+/* ---- Fade Masks ---- */
+.masonry-fade-top,
+.masonry-fade-bottom {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 100px;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.masonry-fade-top {
+	top: 0;
+	background: linear-gradient(to bottom, #050505 0%, transparent 100%);
+}
+
+.masonry-fade-bottom {
+	bottom: 0;
+	background: linear-gradient(to top, #050505 0%, transparent 100%);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+
+/* Tablet — 3 columns */
+@media (max-width: 1024px) {
+	.testimonials-section {
+		padding: 5rem 0 2rem;
+	}
+
+	.testimonials-masonry-wrapper {
+		height: 540px;
+	}
+
+	.masonry-column {
+		max-width: 260px;
+	}
+
+	/* Hide columns 4 and 5 */
+	.masonry-column:nth-child(n + 4) {
+		display: none;
+	}
+
+	.testimonials-masonry-wall {
+		gap: 14px;
+		padding: 0 1.25rem;
+	}
+}
+
+/* Small tablet / large mobile — 2 columns */
+@media (max-width: 768px) {
+	.testimonials-header {
+		margin-bottom: 2rem;
+	}
+
+	.testimonials-masonry-wrapper {
+		height: 480px;
+	}
+
+	.masonry-column {
+		max-width: 48%;
+		flex: 1 1 48%;
+	}
+
+	/* Hide columns 3+ */
+	.masonry-column:nth-child(n + 3) {
+		display: none;
+	}
+
+	.testimonials-masonry-wall {
+		gap: 12px;
+		padding: 0 1rem;
+	}
+
+	.masonry-card {
+		padding: 1.25rem 1.15rem;
+		border-radius: 12px;
+	}
+
+	.masonry-card-quote {
+		font-size: 0.84rem;
+		line-height: 1.65;
+	}
+
+	.masonry-fade-top,
+	.masonry-fade-bottom {
+		height: 70px;
+	}
+}
+
+/* Mobile — 2 narrow columns */
+@media (max-width: 480px) {
+	.testimonials-section {
+		padding: 4rem 0 1.5rem;
+	}
+
+	.testimonials-masonry-wrapper {
+		height: 420px;
+	}
+
+	.testimonials-masonry-wall {
+		gap: 10px;
+		padding: 0 0.75rem;
+	}
+
+	.masonry-card {
+		padding: 1.1rem 1rem;
+		gap: 0.9rem;
+	}
+
+	.masonry-card-quote {
+		font-size: 0.8rem;
+		line-height: 1.6;
+	}
+
+	.masonry-card-avatar {
+		width: 32px;
+		height: 32px;
+		font-size: 0.72rem;
+	}
+
+	.masonry-card-name {
+		font-size: 0.82rem;
+	}
+
+	.masonry-card-college {
+		font-size: 0.7rem;
+	}
+
+	.masonry-fade-top,
+	.masonry-fade-bottom {
+		height: 50px;
+	}
+}
+
+/* Smallest mobile */
+@media (max-width: 360px) {
+	.testimonials-masonry-wrapper {
+		height: 380px;
+	}
+
+	.testimonials-masonry-wall {
+		gap: 8px;
+		padding: 0 0.5rem;
+	}
+
+	.masonry-card {
+		padding: 1rem 0.85rem;
+	}
+}
+
+/* =============================================
+   REDUCED MOTION — Static layout
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+	.masonry-col-scroll-up,
+	.masonry-col-scroll-down {
+		animation: none !important;
+	}
+
+	/* Show only the original set, hide duplicates */
+	.masonry-col-inner[aria-hidden='true'] {
+		display: none;
+	}
+
+	.testimonials-masonry-wrapper {
+		height: auto;
+		max-height: 700px;
+		overflow-y: auto;
+	}
+}

@@ -61,12 +61,12 @@
 
 .profile-ca-badge {
 	display: inline-block;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: #fff;
+	background: #ffb347;
+	color: #050505;
 	padding: 0.375rem 0.875rem;
 	border-radius: 1rem;
 	font-size: 0.875rem;
-	font-weight: 600;
+	font-weight: 700;
 	margin-top: 0.75rem;
 }
 
@@ -202,3 +202,152 @@
 		font-size: 1.25rem;
 	}
 }
+
+/* Offer Letter Milestone Card in Profile */
+.profile-offer-card {
+	background: #0f0f0f;
+	border: 1.5px solid rgba(255, 179, 71, 0.3);
+	border-radius: 16px;
+	padding: 2.25rem 2.5rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	transition: border-color 300ms ease, background-color 300ms ease;
+}
+
+.offer-card-unlocked {
+	border-color: rgba(255, 179, 71, 0.5);
+	background: #141008;
+}
+
+.offer-card-badge-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.badge-unlocked {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	padding: 0.35rem 0.85rem;
+	border-radius: 9999px;
+	background: rgba(16, 185, 129, 0.15);
+	color: #34d399;
+	border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.badge-locked {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	padding: 0.35rem 0.85rem;
+	border-radius: 9999px;
+	background: rgba(255, 179, 71, 0.1);
+	color: #ffb347;
+	border: 1px solid rgba(255, 179, 71, 0.3);
+}
+
+.offer-edition-tag {
+	font-size: 0.85rem;
+	color: rgba(255, 255, 255, 0.45);
+	letter-spacing: 0.04em;
+}
+
+.offer-card-main {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2.5rem;
+	flex-wrap: wrap;
+}
+
+.offer-card-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	flex: 1;
+	min-width: 280px;
+}
+
+.offer-card-title {
+	font-family: 'Clash Display', sans-serif;
+	font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+	font-weight: 700;
+	color: #ffffff;
+	margin: 0;
+	letter-spacing: -0.01em;
+}
+
+.offer-card-desc {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.75);
+	margin: 0;
+	max-width: 580px;
+}
+
+.offer-progress-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	max-width: 420px;
+	margin-top: 0.25rem;
+}
+
+.offer-progress-bar {
+	width: 100%;
+	height: 8px;
+	background: rgba(255, 255, 255, 0.08);
+	border-radius: 9999px;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.offer-progress-fill {
+	height: 100%;
+	background: #ffb347;
+	border-radius: 9999px;
+	transition: width 0.6s ease;
+}
+
+.offer-progress-text {
+	font-size: 0.82rem;
+	color: #ffb347;
+	font-weight: 600;
+}
+
+.offer-card-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+	.profile-offer-card {
+		padding: 1.75rem 1.25rem;
+	}
+
+	.offer-card-actions {
+		width: 100%;
+		flex-direction: column;
+	}
+
+	.offer-card-actions button {
+		width: 100%;
+		justify-content: center;
+	}
+}
+

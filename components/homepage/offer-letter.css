@@ -1,0 +1,589 @@
+.offer-letter-section {
+	position: relative;
+	padding: 7rem 0;
+	background-color: #050505;
+	overflow: hidden;
+}
+
+.offer-header {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 3.5rem;
+	max-width: 800px;
+}
+
+.offer-overline {
+	font-family: ui-monospace, monospace;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.2em;
+	color: #FFB347;
+	text-transform: uppercase;
+}
+
+.offer-title {
+	font-family: 'Clash Display', sans-serif;
+	font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+	font-weight: 700;
+	line-height: 1.08;
+	color: #ffffff;
+	letter-spacing: -0.02em;
+	margin: 0;
+}
+
+.offer-subtitle {
+	font-family: 'Inter', sans-serif;
+	font-size: 1.1rem;
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.7);
+	margin: 0;
+}
+
+/* Master Milestone Stage Container */
+.offer-stage-card {
+	position: relative;
+	border-radius: 24px;
+	padding: 3.5rem 3rem;
+	overflow: hidden;
+	transition: all 0.4s ease;
+}
+
+/* Locked Card Style */
+.stage-locked {
+	background: #0d0d0d;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* Unlocked Card Style with Warm Gold Glow */
+.stage-unlocked {
+	background: linear-gradient(135deg, #161208 0%, #0d0d0d 60%, #130f05 100%);
+	border: 1.5px solid rgba(255, 179, 71, 0.4);
+	box-shadow: 0 0 50px rgba(255, 138, 0, 0.18), 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.offer-stage-content {
+	display: grid;
+	grid-template-columns: 1.15fr 0.85fr;
+	gap: 3.5rem;
+	align-items: center;
+}
+
+.offer-info-col {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.milestone-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-family: ui-monospace, monospace;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.15em;
+	padding: 0.35rem 0.85rem;
+	border-radius: 9999px;
+	width: fit-content;
+}
+
+.badge-locked {
+	background: rgba(255, 255, 255, 0.05);
+	color: rgba(255, 255, 255, 0.6);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge-unlocked {
+	background: rgba(16, 185, 129, 0.12);
+	color: #34D399;
+	border: 1px solid rgba(16, 185, 129, 0.35);
+	box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.offer-stage-heading {
+	font-family: 'Clash Display', sans-serif;
+	font-size: clamp(2rem, 3.5vw, 3rem);
+	font-weight: 700;
+	line-height: 1.1;
+	color: #ffffff;
+	margin: 0;
+}
+
+.offer-stage-text {
+	font-family: 'Inter', sans-serif;
+	font-size: 1.05rem;
+	line-height: 1.65;
+	color: rgba(255, 255, 255, 0.7);
+	margin: 0;
+}
+
+.offer-actions-row {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+	padding-top: 0.5rem;
+}
+
+/* Visual Right Column: Document Silhouette Preview */
+.offer-preview-col {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.offer-doc-mockup {
+	position: relative;
+	width: 100%;
+	max-width: 360px;
+	background: #151515;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 12px;
+	padding: 2rem 1.75rem;
+	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	transition: transform 0.3s ease;
+}
+
+.stage-unlocked .offer-doc-mockup {
+	border-color: rgba(255, 179, 71, 0.35);
+	box-shadow: 0 0 35px rgba(255, 138, 0, 0.15), 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mockup-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding-bottom: 1rem;
+}
+
+.mockup-seal {
+	font-family: ui-monospace, monospace;
+	font-size: 0.7rem;
+	color: #FFB347;
+	letter-spacing: 0.1em;
+}
+
+.mockup-lines {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+}
+
+.mock-line {
+	height: 8px;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.mockup-meta-pill {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.75rem 1rem;
+	background: rgba(255, 255, 255, 0.03);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	border-radius: 8px;
+	font-family: ui-monospace, monospace;
+	font-size: 0.75rem;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+/* Top Floating Banner for Offer Letter */
+.offer-top-banner {
+	position: fixed;
+	top: 80px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: calc(100% - 2.5rem);
+	max-width: 1040px;
+	z-index: 850;
+	background: rgba(14, 12, 8, 0.94);
+	border: 1.5px solid rgba(255, 179, 71, 0.45);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	border-radius: 14px;
+	padding: 0.85rem 1.25rem;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 138, 0, 0.2);
+	animation: slideDownFromTop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.offer-top-banner-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.25rem;
+	flex-wrap: wrap;
+}
+
+.offer-top-banner-left {
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+	flex: 1;
+	min-width: 280px;
+}
+
+.offer-top-badge-icon {
+	width: 2.25rem;
+	height: 2.25rem;
+	border-radius: 50%;
+	background: rgba(255, 179, 71, 0.15);
+	border: 1px solid rgba(255, 179, 71, 0.4);
+	color: #FFB347;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.15rem;
+	flex-shrink: 0;
+}
+
+.offer-top-banner-text {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.88rem;
+	color: rgba(255, 255, 255, 0.9);
+	line-height: 1.4;
+}
+
+.offer-top-bold {
+	font-family: ui-monospace, monospace;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	color: #FFD27A;
+	margin-right: 0.35rem;
+}
+
+.offer-top-banner-actions {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.banner-btn-view {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	background: linear-gradient(135deg, #FF6A00 0%, #FF8A00 50%, #FFB347 100%);
+	color: #050505;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.82rem;
+	font-weight: 700;
+	padding: 0.45rem 1rem;
+	border-radius: 9999px;
+	border: none;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+}
+
+.banner-btn-view:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 20px rgba(255, 138, 0, 0.45);
+	color: #000;
+}
+
+.banner-btn-profile {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	color: #ffffff;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.82rem;
+	font-weight: 500;
+	padding: 0.45rem 0.9rem;
+	border-radius: 9999px;
+	text-decoration: none;
+	transition: all 0.2s ease;
+}
+
+.banner-btn-profile:hover {
+	background: rgba(255, 179, 71, 0.12);
+	border-color: rgba(255, 179, 71, 0.4);
+	color: #FFD27A;
+}
+
+.banner-btn-close {
+	background: transparent;
+	border: none;
+	color: rgba(255, 255, 255, 0.6);
+	font-size: 1.1rem;
+	cursor: pointer;
+	padding: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: color 0.2s ease;
+}
+
+.banner-btn-close:hover {
+	color: #ffffff;
+}
+
+/* Official Document Modal Overlay (Top-Anchored Pop Up) */
+.doc-modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 99999;
+	background: rgba(0, 0, 0, 0.85);
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 4rem 1.5rem 2rem;
+	overflow-y: auto;
+	animation: fadeInOverlay 0.25s ease-out;
+}
+
+.doc-modal-container {
+	position: relative;
+	width: 100%;
+	max-width: 760px;
+	background: #0e0e0e;
+	border: 1.5px solid rgba(255, 179, 71, 0.4);
+	border-radius: 20px;
+	padding: 3rem 2.5rem;
+	box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95);
+	display: flex;
+	flex-direction: column;
+	gap: 1.75rem;
+	animation: slideDownFromTop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	margin-top: 1rem;
+}
+
+@keyframes slideDownFromTop {
+	from {
+		opacity: 0;
+		transform: translateY(-45px) scale(0.97);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes fadeInOverlay {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.modal-close-btn {
+	position: absolute;
+	top: 1.5rem;
+	right: 1.5rem;
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 50%;
+	width: 2.25rem;
+	height: 2.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #ffffff;
+	cursor: pointer;
+	padding: 0;
+	transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease,
+		transform 150ms ease-out;
+}
+
+.modal-close-btn:hover {
+	background: rgba(255, 179, 71, 0.2);
+	border-color: #ffb347;
+	color: #ffb347;
+}
+
+.modal-close-btn:active {
+	transform: scale(0.92);
+}
+
+/* Printable Official Letter Design */
+.official-letter-paper {
+	background: #121212;
+	border: 1px solid rgba(255, 179, 71, 0.25);
+	border-radius: 12px;
+	padding: 2.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.75rem;
+}
+
+.letter-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 2px solid rgba(255, 179, 71, 0.3);
+	padding-bottom: 1.5rem;
+}
+
+.letter-logo {
+	height: 42px;
+	width: auto;
+}
+
+.letter-header-meta {
+	text-align: right;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	color: #ffd27a;
+	line-height: 1.5;
+}
+
+.letter-title-block {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.letter-supertitle {
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	color: #ffb347;
+	text-transform: uppercase;
+}
+
+.letter-main-title {
+	font-family: 'Clash Display', sans-serif;
+	font-size: 2rem;
+	font-weight: 700;
+	color: #ffffff;
+	letter-spacing: -0.01em;
+	margin: 0;
+}
+
+.letter-body-text {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.98rem;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.85);
+	margin: 0;
+}
+
+.letter-highlight-name {
+	font-family: 'Clash Display', sans-serif;
+	font-size: 1.35rem;
+	font-weight: 700;
+	color: #FFD27A;
+	display: block;
+	margin: 0.5rem 0;
+}
+
+.letter-credentials-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	background: rgba(255, 255, 255, 0.02);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	border-radius: 8px;
+	padding: 1.25rem;
+}
+
+.cred-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.cred-label {
+	font-size: 0.72rem;
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.45);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+.cred-val {
+	font-size: 0.92rem;
+	font-weight: 600;
+	color: #ffffff;
+}
+
+.letter-footer {
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	padding-top: 1.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.letter-issuing-authority {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.82rem;
+	color: rgba(255, 255, 255, 0.6);
+	line-height: 1.4;
+}
+
+.modal-actions-bar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 1rem;
+}
+
+@media (max-width: 900px) {
+	.offer-stage-content {
+		grid-template-columns: 1fr;
+	}
+
+	.offer-stage-card {
+		padding: 2.5rem 1.5rem;
+	}
+
+	.doc-modal-container {
+		padding: 2rem 1.25rem;
+	}
+
+	.official-letter-paper {
+		padding: 1.5rem 1rem;
+	}
+
+	.letter-credentials-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Clean Print Rules for Official Document */
+@media print {
+	body * {
+		visibility: hidden;
+	}
+	.doc-modal-overlay,
+	.official-letter-paper,
+	.official-letter-paper * {
+		visibility: visible;
+	}
+	.doc-modal-overlay {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		background: #ffffff;
+		padding: 0;
+	}
+	.official-letter-paper {
+		background: #ffffff;
+		color: #000000;
+		border: 2px solid #000000;
+	}
+	.official-letter-paper * {
+		color: #000000 !important;
+	}
+	.modal-close-btn,
+	.modal-actions-bar {
+		display: none !important;
+	}
+}

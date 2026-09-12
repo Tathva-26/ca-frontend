@@ -13,16 +13,6 @@ export default function RegisterForm({ editProfile }) {
 	const router = useRouter()
 	const [form, setForm] = useState(null)
 
-	// ✅ Run client-only redirect + toast
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			toast.error('Registrations closed')
-			const timer = setTimeout(() => {
-				router.push('/')
-			}, 1500)
-			return () => clearTimeout(timer)
-		}
-	}, [router])
 
 	useEffect(() => {
 		if (!user) return

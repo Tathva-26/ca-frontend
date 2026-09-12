@@ -18,9 +18,9 @@ export default function RUReady() {
 
 	const handleClick = () => {
 		if (isLoggedIn && user) {
-			toast.info('You are already logged in!')
+			router.push('/dashboard/profile')
 		} else {
-			toast.info('Registrations are closed.')
+			router.push('/register')
 		}
 	}
 

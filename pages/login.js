@@ -13,6 +13,7 @@ export default function Login() {
 		password: '',
 	})
 	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState('')
 
 	// Redirect if already logged in
 	useEffect(() => {
@@ -33,7 +34,7 @@ export default function Login() {
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		setIsLoading(true)
-
+		setError('')
 
 		const result = await login(formData.email, formData.password)
 
@@ -43,15 +44,26 @@ export default function Login() {
 			const redirectTo = sessionStorage.getItem('redirectTo') || '/dashboard/profile'
 			sessionStorage.removeItem('redirectTo')
 			router.push(redirectTo)
+		} else {
+			setError(result.error || 'Sign in failed. Please check your credentials and try again.')
 		}
 	}
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.loginBox}>
+				<span className={styles.overline}>Ambassador Program · Tathva &apos;26</span>
+
 				<div className={styles.logoSection}>
-					<p className={styles.subtitle}>Sign in to your account</p>
+					<h1 className={styles.title}>Sign In</h1>
+					<p className={styles.subtitle}>Return to your ambassador dashboard</p>
 				</div>
+
+				{error && (
+					<p className={styles.errorMessage} role='alert'>
+						{error}
+					</p>
+				)}
 
 				<form onSubmit={handleSubmit} className={styles.form}>
 					<div className={styles.inputGroup}>
@@ -86,12 +98,6 @@ export default function Login() {
 						/>
 					</div>
 
-					<div className={styles.forgotPassword}>
-						{/* <Link href='/reset-password' className={styles.link}>
-							Forgot password?
-						</Link> */}
-					</div>
-
 					<button type='submit' className={styles.submitButton} disabled={isLoading}>
 						{isLoading ? 'Signing in...' : 'Sign In'}
 					</button>
@@ -99,8 +105,9 @@ export default function Login() {
 
 				<div className={styles.footer}>
 					<p className={styles.footerText}>
+						New to the network?{' '}
 						<Link href='/register' className={styles.link}>
-							Sign upvdfdf
+							Create your account
 						</Link>
 					</p>
 				</div>
