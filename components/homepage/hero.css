@@ -311,6 +311,7 @@
 		justify-content: center;
 		margin: 0.5rem 0;
 	}
+}
 
 @media (max-width: 768px) {
 	.hero {

@@ -38,9 +38,6 @@ import 'lenis/dist/lenis.css'
 
 import Head from 'next/head'
 
-import Lenis from 'lenis'
-import 'lenis/dist/lenis.css'
-
 import Nav from 'components/common/Nav'
 import Footer from 'components/common/Footer'
 import UserContextWrapper from 'context/UserContext'
