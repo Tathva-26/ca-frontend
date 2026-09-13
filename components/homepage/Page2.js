@@ -25,14 +25,7 @@ export default function Page2() {
 	return (
 		<div className='page-2 container' id='explore'>
 			<div className='spacerv-md'></div>
-			<h2 className='page-2-heading'>
-				What you should do
-				<span className='dots-container'>
-					<span className='dot'></span>
-					<span className='dot'></span>
-					<span className='dot'></span>
-				</span>
-			</h2>
+			<h2 className='page-2-heading'>What you should do</h2>
 			<div className='page-2-cards-wrapper'>
 				{cardData.map((item, index) => (
 					<div className='page-2-card-wrapper' key={index}>

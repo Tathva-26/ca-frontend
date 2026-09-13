@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useUserContext } from 'context/UserContext'
-import FinalCTA from 'components/homepage/FinalCTA'
+
+import PageHeader from 'components/common/PageHeader'
+import RUReady from 'components/common/RUReady'
+import styles from 'components/leaderboard/leaderboard.module.css'
+import GhostFibers from 'components/leaderboard/GhostFibers'
 
 export default function Leaderboard() {
 	const { user } = useUserContext()
@@ -10,111 +11,72 @@ export default function Leaderboard() {
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
+		/*
+		// Leaderboard API temporarily disabled
+
 		fetch('https://api.tathva.org/api/leaderboard')
-			.then((res) => {
-				if (!res.ok) throw new Error('Network response not ok')
-				return res.json()
-			})
-			.then((data) => {
-				if (Array.isArray(data)) {
-					const sorted = data.sort((a, b) => (b.count || 0) - (a.count || 0)).slice(0, 50)
-					setLeaderboard(sorted)
-				}
-			})
-			.catch((err) => console.log('Leaderboard API fetch notice:', err?.message || err))
-			.finally(() => setLoading(false))
+		.then((res) => res.json())
+		.then((data) => {
+			const sorted = data
+			.sort((a, b) => b.count - a.count)
+			.slice(0, 50)
+
+			setLeaderboard(sorted)
+		})
+		.catch((err) => console.error('Error fetching leaderboard:', err))
+		.finally(() => setLoading(false))
+		*/
+
+		// Remove the normal grid background while on the leaderboard
+		document.body.classList.add('leaderboard-page')
+
+		// Stop the page from staying on "Loading..."
+		setLoading(false)
+
+		// Put the normal background back when leaving the leaderboard
+		return () => {
+			document.body.classList.remove('leaderboard-page')
+		}
 	}, [])
 
 	const maxPoints = leaderboard.length > 0 ? (leaderboard[0].count || 1) * 10 : 1000
 
 	return (
-		<>
-			<Head>
-				<title>Leaderboard · Tathva &apos;26</title>
-			</Head>
+		<div className='relative min-h-screen overflow-hidden'>
+			{/* GhostFibers full-page background */}
+			<GhostFibers className='fixed inset-0 z-0' />
 
-			<div style={{ paddingTop: '7rem', minHeight: '80vh', backgroundColor: '#050505' }}>
+			{/* Page content above GhostFibers */}
+			<div className='relative z-10'>
+				<PageHeader title='Leaderboard' />
+
 				<div className='container'>
-					<div style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-						<span className='section-label'>Live standings</span>
-						<h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
-							Campus Ambassador <span className='text-gradient-gold'>Leaderboard</span>
-						</h1>
-						<p style={{ maxWidth: '700px', fontSize: '1.1rem', color: 'rgba(255, 255, 255, 0.7)' }}>
-							Colleges ranked by verified points. The top 20 ambassadors qualify for the ₹25,000+
-							prize pool and NIT Calicut certificates.
-						</p>
-					</div>
-
-					<div className='leaderboard-editorial-card' style={{ marginBottom: '5rem' }}>
-						<div className='leaderboard-meta-strip'>
-							<span>Rank & campus</span>
-							<span>Points</span>
-						</div>
-
+					<div className={styles['leaderboard']}>
 						{loading ? (
-							<div className='leaderboard-empty-msg'>
-								<span>Loading…</span>
-							</div>
-						) : leaderboard.length > 0 ? (
-							<div className='standings-list'>
-								{leaderboard.map((item, index) => {
-									const rank = index + 1
-									const rankStr = rank < 10 ? `0${rank}` : `${rank}`
-									const points = (item.count || 0) * 10
-									const percent = Math.min(100, Math.max(12, Math.round((points / maxPoints) * 100)))
-									const isUser = Boolean(
-										user &&
-											((item.name && user.name && item.name.toLowerCase() === user.name.toLowerCase()) ||
-												(item.tathvaId && user.tathvaId && item.tathvaId === user.tathvaId))
-									)
+							<div className={styles['empty']}>Loading...</div>
+						) : leaderboard.length ? (
+							<div className={styles['participants-wrapper']}>
+								<div className={styles['participants-header']}>
+									<span className={styles['p-rank']}>Rank</span>
+									<span className={styles['p-name']}>Name</span>
+									<span className={styles['p-points']}>Points</span>
+								</div>
 
-									return (
-										<div
-											key={index}
-											className={`standing-item ${isUser ? 'standing-item-user' : ''}`}
-										>
-											<div className='standing-row-top'>
-												<div className='standing-left'>
-													<span className='standing-rank-num'>{rankStr}</span>
-													<div className='standing-name-block'>
-<span className='standing-name'>
-														{item.name || `Ambassador ${rankStr}`}
-														{isUser && <span className='standing-user-badge'>You</span>}
-													</span>
-														{item.college && <span className='standing-college'>{item.college}</span>}
-													</div>
-												</div>
-
-												<div className='standing-right'>
-													<span className='standing-points-val'>{points}</span>
-													<span className='standing-points-unit'>points</span>
-												</div>
-											</div>
-
-											<div className='standing-line-track'>
-												<div className='standing-line-fill' style={{ width: `${percent}%` }}></div>
-											</div>
-										</div>
-									)
-								})}
+								{leaderboard.map((item, index) => (
+									<Participant key={index} rank={index + 1} name={item.name} points={item.count} />
+								))}
 							</div>
 						) : (
-							<div className='leaderboard-empty-msg'>
-								<span>Standings will appear here once registrations open.</span>
-								{user && (
-									<div style={{ marginTop: '1rem', color: '#FFB347' }}>
-										Your points: <strong>{user.points || 0}</strong>
-									</div>
-								)}
+							<div className={`${styles['empty']} ${styles['empty-leaderboard']}`}>
+								No data available
 							</div>
 						)}
 					</div>
 				</div>
 
-				<FinalCTA />
+				<RUReady />
 			</div>
-		</>
+		</div>
 	)
 }
 

@@ -44,7 +44,7 @@ export default function ContactUs() {
 			<div className={styles['contact-us']}>
 				<div className={styles['contact-us-left']}>
 					<div>
-						<SubHeading title='Get in touch' icon='/images/hand.png' />
+						<SubHeading title='Get in touch' />
 						<div className={styles['git-content']}>
 							<div className={styles['contact']}>
 								<div className={styles['contact-icon-wrapper']}>

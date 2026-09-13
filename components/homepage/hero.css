@@ -3,36 +3,35 @@
 	min-height: 100vh;
 	min-height: 100dvh;
 	display: flex;
-	align-items: center;
-	padding-top: 5.5rem;
-	padding-bottom: 3.5rem;
-	overflow: hidden;
-	background-color: #050505;
-}
-
-/* Main Grid Layout */
-.hero-container {
+	flex-direction: column;
+	justify-content: center;
+	height: 100vh;
+	min-height: 768px;
+	max-height: 1000px;
 	position: relative;
-	z-index: 10;
-	display: grid;
-	grid-template-columns: 1.15fr 0.95fr;
-	align-items: center;
-	gap: 3rem;
+	/* background image + mask now live on .hero::before so they never affect text */
+}
+
+.hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: url('/images/hero-desktop.png');
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	background-position: top right;
+	-webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+	mask-image: linear-gradient(to bottom, #000 0%, #000 65%, transparent 100%);
+	z-index: 0;
+	pointer-events: none;
+}
+
+.hero-nav-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
-}
-
-/* Left Typography Column */
-.hero-left {
-	display: flex;
-	flex-direction: column;
-	gap: 1.5rem;
-	max-width: 680px;
-}
-
-.hero-header {
-	display: flex;
-	flex-direction: column;
-	gap: 1.25rem;
+	z-index: 1;
 }
 
 .hero-telemetry-strip {
@@ -41,20 +40,15 @@
 	width: 100%;
 	position: relative;
 	line-height: 1.25;
+	z-index: 1;
 }
 
-.hero-status-pill {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5rem;
-	padding: 0.4rem 0.9rem;
-	border-radius: 9999px;
-	background: rgba(255, 179, 71, 0.08);
-	border: 1px solid rgba(255, 179, 71, 0.25);
-	font-size: 0.82rem;
-	font-weight: 600;
-	letter-spacing: 0.02em;
-	color: #ffd27a;
+.hero-sponsors-wrapper {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1;
 }
 
 .hero-status-indicator {
@@ -64,10 +58,12 @@
 	background: #10b981;
 }
 
-.hero-telemetry-tag {
-	font-size: 0.8rem;
-	letter-spacing: 0.04em;
-	color: rgba(255, 255, 255, 0.5);
+/* CONTENT */
+.hero-text {
+	margin-left: 3rem;
+	align-items: center;
+	position: relative;
+	z-index: 1;
 }
 
 .hero-title {
@@ -101,8 +97,13 @@
 }
 
 @keyframes typewriter-blink {
-	0%, 100% { opacity: 1; }
-	50% { opacity: 0; }
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
 }
 
 .hero-description {
@@ -296,7 +297,7 @@
 	.deadline-timer {
 		padding: 10px 20px;
 	}
-	.hero {
+	.hero::before {
 		background-image: url('/images/hero-desktop.png');
 		background-size: 500px auto;
 		background-position: right center;
@@ -314,8 +315,7 @@
 }
 
 @media (max-width: 768px) {
-	.hero {
-		/* background-image: url('/images/hero-desktop.png'); */
+	.hero::before {
 		background-image: none;
 	}
 
@@ -337,14 +337,18 @@
 	}
 }
 
-
 @media (max-width: 550px) {
-	.hero {
+	.hero::before {
 		background-image: url('/images/hero-desktop.png');
 		background-size: 100% auto;
-		background-position: center 50px;
+		background-position: center 100px; /* was 50px — pushes image further down */
+		-webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 60%);
+		mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 60%);
+	}
+	.hero {
 		justify-content: flex-end;
 		line-height: 4;
+		padding-bottom: 12vh; /* increased from 8vh — pushes text further up */
 	}
 	.hero-text container {
 		line-height: 3;
@@ -394,50 +398,46 @@
 		margin-bottom: 0 rem;
 	}
 }
+
 @media (max-width: 380px) {
 	.hero-text {
-		margin-bottom: 3.75rem;
+		margin-bottom: 2rem; /* reduced from 3.75rem so text sits higher on small phones */
 	}
-	
 }
+
 .deadline-timer {
-  margin: 24px 0;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font-size: 1rem;
-  text-align: center;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  
-  width: fit-content;
-  max-width: 100%;
-  text-align: left;
-  margin-left: 0;
+	margin: 24px 0;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	color: #fff;
+	font-size: 1rem;
+	text-align: center;
+	font-weight: 500;
+	transition: all 0.3s ease;
+	cursor: pointer;
+
+	width: fit-content;
+	max-width: 100%;
+	text-align: left;
+	margin-left: 0;
 }
 
 .deadline-timer:hover {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: #000000;
+	background: #ffffff;
+	border-color: #ffffff;
+	color: #000000;
 }
 
 .deadline-timer:hover span,
 .deadline-timer:hover strong {
-  color: #000000;
+	color: #000000;
 }
 
 .deadline-timer strong {
-  color: #a855f7;
-  font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
+	color: #a855f7;
+	font-weight: 700;
+	letter-spacing: 1px;
+	font-size: 1.1rem;
+	transition: color 0.3s ease;
 }
-
-/* If the .hero-text container itself has padding that pushes content,
-   you might need to adjust margin on the .deadline-timer or its parent.
-   Based on the image, margin-left: 0 should work to align it with "Campus Ambassador".
-*/

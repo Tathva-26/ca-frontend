@@ -1,6 +1,37 @@
+// Hexagon geometry (matches the outer 'goldRimGrad' polygon, viewBox 240x270)
+const VBW = 240
+const VBH = 270
+const HEX_POINTS = [
+	[120, 8],
+	[218, 65],
+	[218, 199],
+	[120, 256],
+	[22, 199],
+	[22, 65],
+]
+const DEPTH = 72 // px thickness of the medal — bump this up/down to taste
+
+// Build one real side-wall panel per hexagon edge (a true extruded prism,
+// not stacked flat copies) — this is what removes the seams entirely.
+const WALLS = HEX_POINTS.map((p, i) => {
+	const q = HEX_POINTS[(i + 1) % HEX_POINTS.length]
+	const dx = q[0] - p[0]
+	const dy = q[1] - p[1]
+	const lengthVB = Math.sqrt(dx * dx + dy * dy)
+	const midX = (p[0] + q[0]) / 2
+	const midY = (p[1] + q[1]) / 2
+	const angleDeg = (Math.atan2(dy, dx) * 180) / Math.PI
+	return {
+		leftPct: (midX / VBW) * 100,
+		topPct: (midY / VBH) * 100,
+		widthPct: (lengthVB / VBW) * 100,
+		angleDeg,
+	}
+})
+
 export default function Page4() {
 	return (
-		<div className='w-full relative overflow-hidden bg-[#08080a] border-y border-neutral-900/80 shadow-2xl py-16 sm:py-24 antialiased my-8'>
+		<div className='w-full relative overflow-hidden py-16 sm:py-24 antialiased my-8'>
 			{/* Background cyber grid */}
 			<div
 				aria-hidden='true'
@@ -16,7 +47,7 @@ export default function Page4() {
 			{/* Ambient Glow Aura Behind Emblem */}
 			<div
 				aria-hidden='true'
-				className='absolute right-10 top-1/2 -translate-y-1/2 w-[500px] h-[500px] pedestal-glow filter blur-3xl opacity-70 pointer-events-none'
+				className='absolute right-10 top-1/2 -translate-y-1/2 w-[500px] h-[500px] pedestal- filter blur-3xl opacity-70 pointer-events-none'
 			></div>
 
 			{/* Inner Content Container */}
@@ -26,7 +57,6 @@ export default function Page4() {
 					className='lg:col-span-7 flex flex-col justify-center space-y-6 max-w-2xl'
 					data-purpose='information-column'
 				>
-					{/* Category Pill / Overline */}
 					<header className='flex items-center space-x-3'>
 						<span className='text-xs sm:text-sm font-semibold tracking-[0.22em] text-[#e5b842] uppercase font-sans'>
 							Who Can Apply?
@@ -43,19 +73,16 @@ export default function Page4() {
 						</span>
 					</h1>
 
-					{/* Primary Description */}
 					<p className='text-neutral-200 text-lg sm:text-xl font-normal leading-relaxed tracking-wide pt-1'>
 						Any student currently pursuing education in an established institute who wishes to
 						participate in Tathva may apply.
 					</p>
 
-					{/* Preference Callout Box (with hover lift & gold shadow effect) */}
 					<aside
 						className='preference-card rounded-2xl p-5 sm:p-6 mt-2 transition-all duration-300 hover:border-gold-400/60 cursor-pointer'
 						data-purpose='preference-callout'
 					>
 						<div className='flex items-center gap-4 sm:gap-5'>
-							{/* Icon */}
 							<div className='flex-shrink-0 text-gold-400 pl-1' data-purpose='icon-wrapper'>
 								<svg
 									aria-hidden='true'
@@ -72,9 +99,7 @@ export default function Page4() {
 									<path d='M16 3.13a4 4 0 0 1 0 7.75'></path>
 								</svg>
 							</div>
-							{/* Divider */}
 							<div aria-hidden='true' className='w-px h-12 bg-gold-400/25 flex-shrink-0'></div>
-							{/* Text */}
 							<p className='text-xs sm:text-sm text-neutral-300 font-normal leading-snug tracking-wide'>
 								Applicants having good interpersonal and communication skills with previous
 								experience will be given preference.
@@ -84,18 +109,16 @@ export default function Page4() {
 				</div>
 				{/* END: LeftContentColumn */}
 
-				{/* BEGIN: RightEmblemColumn (Cuter Smaller Emblem Badge Stage) */}
+				{/* BEGIN: RightEmblemColumn */}
 				<div
 					className='lg:col-span-5 flex flex-col items-center justify-center relative min-h-[320px] py-2'
 					data-purpose='3d-emblem-stage'
 				>
-					{/* Ambient Golden Glow behind Emblem */}
 					<div
 						aria-hidden='true'
 						className='absolute w-64 h-64 rounded-full bg-amber-500/25 filter blur-3xl pointer-events-none'
 					></div>
 
-					{/* Floating Sparkle Stars */}
 					<div className='absolute -top-1 right-10 text-amber-300/80 text-lg font-serif pointer-events-none select-none'>
 						✦
 					</div>
@@ -106,28 +129,47 @@ export default function Page4() {
 						✦
 					</div>
 
-					{/* Cuter Smaller 3D Hexagon Emblem (Outer Metallic Frame + Dark Core + Verified User Badge) */}
+					{/* True Extruded 3D Hexagon Prism (front face + back face + 6 real side walls) */}
 					<style>{`
 						@keyframes emblemAutoSpin {
 							from { transform: rotateY(0deg); }
 							to   { transform: rotateY(360deg); }
 						}
 					`}</style>
-					<div className='relative z-20 hexagon-shadow flex flex-col items-center [perspective:1000px]'>
+					<div className='relative z-20 hexagon-shadow flex flex-col items-center [perspective:1400px]'>
 						<div
-							className='relative [transform-style:preserve-3d]'
-							style={{ animation: 'emblemAutoSpin 6s linear infinite' }}
+							className='relative w-48 sm:w-56 aspect-[8/9] [transform-style:preserve-3d]'
+							style={{ animation: 'emblemAutoSpin 6s linear infinite', willChange: 'transform' }}
 						>
+							{/* SIX SIDE WALLS — real geometry, no gaps, no z-fighting */}
+							{WALLS.map((w, i) => (
+								<div
+									key={i}
+									aria-hidden='true'
+									className='absolute'
+									style={{
+										left: `${w.leftPct - w.widthPct / 2}%`,
+										top: `calc(${w.topPct}% - ${DEPTH / 2}px)`,
+										width: `${w.widthPct}%`,
+										height: `${DEPTH}px`,
+										transform: `rotateZ(${w.angleDeg}deg) rotateX(90deg)`,
+										background: 'linear-gradient(180deg, #f5d376 0%, #e5b842 50%, #cf9932 100%)',
+									}}
+								></div>
+							))}
+
 							{/* FRONT FACE */}
-							<div className='[backface-visibility:hidden]'>
+							<div
+								className='absolute inset-0 [backface-visibility:hidden]'
+								style={{ transform: `translateZ(${DEPTH / 2}px)` }}
+							>
 								<svg
-									className='w-48 h-54 sm:w-56 sm:h-64'
+									className='w-full h-full'
 									fill='none'
 									viewBox='0 0 240 270'
 									xmlns='http://www.w3.org/2000/svg'
 								>
 									<defs>
-										{/* Outer Golden Rim Gradient */}
 										<linearGradient
 											gradientUnits='userSpaceOnUse'
 											id='goldRimGrad'
@@ -143,8 +185,6 @@ export default function Page4() {
 											<stop offset='90%' stopColor='#7a5511' />
 											<stop offset='100%' stopColor='#f8dc8b' />
 										</linearGradient>
-
-										{/* Metallic Bevel Depth Gradient */}
 										<linearGradient
 											gradientUnits='userSpaceOnUse'
 											id='bevelGrad'
@@ -159,8 +199,6 @@ export default function Page4() {
 											<stop offset='75%' stopColor='#e2b047' />
 											<stop offset='100%' stopColor='#2d1d02' />
 										</linearGradient>
-
-										{/* Inner Hexagon Dark Face */}
 										<linearGradient
 											gradientUnits='userSpaceOnUse'
 											id='innerFaceGrad'
@@ -173,78 +211,51 @@ export default function Page4() {
 											<stop offset='40%' stopColor='#19191d' />
 											<stop offset='100%' stopColor='#0e0e11' />
 										</linearGradient>
-
-										{/* Silver / Chrome Gradient */}
 										<linearGradient id='silverShine' x1='0%' x2='100%' y1='0%' y2='100%'>
 											<stop offset='0%' stopColor='#ffffff' />
 											<stop offset='55%' stopColor='#d4d8df' />
 											<stop offset='100%' stopColor='#939ba8' />
 										</linearGradient>
-
-										{/* Golden Checkmark Gradient */}
 										<linearGradient id='goldenCheck' x1='0%' x2='100%' y1='0%' y2='100%'>
 											<stop offset='0%' stopColor='#ffe188' />
 											<stop offset='50%' stopColor='#dfaa3f' />
 											<stop offset='100%' stopColor='#9e6e18' />
 										</linearGradient>
-
-										{/* Filter for Inner Shadow */}
-										<filter height='120%' id='innerDepth' width='120%' x='-10%' y='-10%'>
-											<feDropShadow
-												dx='0'
-												dy='5'
-												floodColor='#000000'
-												floodOpacity='0.9'
-												stdDeviation='4'
-											/>
-										</filter>
+										{/* NOTE: feDropShadow filter removed here — filters inside a
+										    rotating preserve-3d context cause the flicker/disappear bug
+										    in Chromium & Safari. Depth is now conveyed via strokes/gradients. */}
 									</defs>
 
-									{/* Hexagon Bevel Outer Extrusion */}
 									<polygon
 										fill='url(#goldRimGrad)'
 										points='120,8 218,65 218,199 120,256 22,199 22,65'
 										stroke='rgba(255,255,255,0.4)'
 										strokeWidth='1.5'
 									/>
-
-									{/* Metallic Bevel */}
 									<polygon
 										fill='url(#bevelGrad)'
 										points='120,18 206,68 206,188 120,238 34,188 34,68'
 									/>
-
-									{/* Hexagon Core Slate Surface */}
 									<polygon
 										fill='url(#innerFaceGrad)'
-										filter='url(#innerDepth)'
 										points='120,30 194,73 194,177 120,220 46,177 46,73'
 										stroke='#674b12'
 										strokeWidth='1.8'
 									/>
-
-									{/* Inner Subtle Hexagon Hairline Accent */}
 									<polygon
 										fill='none'
 										points='120,38 186,76 186,170 120,208 54,170 54,76'
 										stroke='rgba(229,184,66,0.18)'
 										strokeWidth='1.2'
 									/>
-
-									{/* User Icon - Head */}
 									<circle cx='120' cy='104' fill='url(#silverShine)' r='19' />
-
-									{/* User Icon - Body */}
 									<path
 										d='M96 156 C96 138 106 130 120 130 C125 130 130 131.5 134.5 134 C132.8 138 132 142.5 132.5 147.5 L129 156 Z'
 										fill='url(#silverShine)'
 									/>
-
-									{/* Checkmark */}
 									<path
 										d='M126 148 L137 159 L158 131'
 										fill='none'
-										filter='drop-shadow(0 2px 4px rgba(0,0,0,0.6))'
 										stroke='url(#goldenCheck)'
 										strokeLinecap='round'
 										strokeLinejoin='round'
@@ -254,15 +265,17 @@ export default function Page4() {
 							</div>
 
 							{/* BACK FACE */}
-							<div className='absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]'>
+							<div
+								className='absolute inset-0 [backface-visibility:hidden]'
+								style={{ transform: `rotateY(180deg) translateZ(${DEPTH / 2}px)` }}
+							>
 								<svg
-									className='w-48 h-54 sm:w-56 sm:h-64'
+									className='w-full h-full'
 									fill='none'
 									viewBox='0 0 240 270'
 									xmlns='http://www.w3.org/2000/svg'
 								>
 									<defs>
-										{/* Outer Golden Rim Gradient */}
 										<linearGradient
 											gradientUnits='userSpaceOnUse'
 											id='goldRimGradBack'
@@ -278,8 +291,6 @@ export default function Page4() {
 											<stop offset='90%' stopColor='#7a5511' />
 											<stop offset='100%' stopColor='#f8dc8b' />
 										</linearGradient>
-
-										{/* Metallic Bevel Depth Gradient */}
 										<linearGradient
 											gradientUnits='userSpaceOnUse'
 											id='bevelGradBack'
@@ -294,8 +305,6 @@ export default function Page4() {
 											<stop offset='75%' stopColor='#e2b047' />
 											<stop offset='100%' stopColor='#2d1d02' />
 										</linearGradient>
-
-										{/* Inner Hexagon Dark Face */}
 										<linearGradient
 											gradientUnits='userSpaceOnUse'
 											id='innerFaceGradBack'
@@ -308,78 +317,48 @@ export default function Page4() {
 											<stop offset='40%' stopColor='#19191d' />
 											<stop offset='100%' stopColor='#0e0e11' />
 										</linearGradient>
-
-										{/* Silver / Chrome Gradient */}
 										<linearGradient id='silverShineBack' x1='0%' x2='100%' y1='0%' y2='100%'>
 											<stop offset='0%' stopColor='#ffffff' />
 											<stop offset='55%' stopColor='#d4d8df' />
 											<stop offset='100%' stopColor='#939ba8' />
 										</linearGradient>
-
-										{/* Golden Checkmark Gradient */}
 										<linearGradient id='goldenCheckBack' x1='0%' x2='100%' y1='0%' y2='100%'>
 											<stop offset='0%' stopColor='#ffe188' />
 											<stop offset='50%' stopColor='#dfaa3f' />
 											<stop offset='100%' stopColor='#9e6e18' />
 										</linearGradient>
-
-										{/* Filter for Inner Shadow */}
-										<filter height='120%' id='innerDepthBack' width='120%' x='-10%' y='-10%'>
-											<feDropShadow
-												dx='0'
-												dy='5'
-												floodColor='#000000'
-												floodOpacity='0.9'
-												stdDeviation='4'
-											/>
-										</filter>
 									</defs>
 
-									{/* Hexagon Bevel Outer Extrusion */}
 									<polygon
 										fill='url(#goldRimGradBack)'
 										points='120,8 218,65 218,199 120,256 22,199 22,65'
 										stroke='rgba(255,255,255,0.4)'
 										strokeWidth='1.5'
 									/>
-
-									{/* Metallic Bevel */}
 									<polygon
 										fill='url(#bevelGradBack)'
 										points='120,18 206,68 206,188 120,238 34,188 34,68'
 									/>
-
-									{/* Hexagon Core Slate Surface */}
 									<polygon
 										fill='url(#innerFaceGradBack)'
-										filter='url(#innerDepthBack)'
 										points='120,30 194,73 194,177 120,220 46,177 46,73'
 										stroke='#674b12'
 										strokeWidth='1.8'
 									/>
-
-									{/* Inner Subtle Hexagon Hairline Accent */}
 									<polygon
 										fill='none'
 										points='120,38 186,76 186,170 120,208 54,170 54,76'
 										stroke='rgba(229,184,66,0.18)'
 										strokeWidth='1.2'
 									/>
-
-									{/* User Icon - Head */}
 									<circle cx='120' cy='104' fill='url(#silverShineBack)' r='19' />
-
-									{/* User Icon - Body */}
 									<path
 										d='M96 156 C96 138 106 130 120 130 C125 130 130 131.5 134.5 134 C132.8 138 132 142.5 132.5 147.5 L129 156 Z'
 										fill='url(#silverShineBack)'
 									/>
-
-									{/* Checkmark */}
 									<path
 										d='M126 148 L137 159 L158 131'
 										fill='none'
-										filter='drop-shadow(0 2px 4px rgba(0,0,0,0.6))'
 										stroke='url(#goldenCheckBack)'
 										strokeLinecap='round'
 										strokeLinejoin='round'
@@ -390,31 +369,26 @@ export default function Page4() {
 						</div>
 					</div>
 
-					{/* 3DPodiumDais Base (Cuter Scaled Stand) */}
+					{/* Pedestal base */}
 					<div
 						className='relative w-56 sm:w-64 h-14 -mt-9 z-10 flex flex-col items-center'
 						data-purpose='pedestal-stand'
 					>
-						{/* Top Tier Ring / Bevel */}
 						<div className='w-40 sm:w-48 h-6 rounded-[50%] bg-gradient-to-r from-[#946b19] via-[#fae08c] via-50% to-[#664609] p-[1.5px] shadow-lg'>
 							<div className='w-full h-full rounded-[50%] bg-gradient-to-b from-[#141416] to-[#0a0a0c] border border-amber-400/40'></div>
 						</div>
-						{/* Mid Tier Body */}
 						<div className='w-48 sm:w-54 h-6 -mt-3.5 rounded-[50%] bg-gradient-to-r from-[#b38525] via-[#fff1b0] via-45% to-[#704d0c] shadow-[0_8px_20px_rgba(0,0,0,0.9)] p-[1.8px]'>
 							<div className='w-full h-full rounded-[50%] bg-gradient-to-r from-[#382607] via-[#211704] to-[#120c02]'></div>
 						</div>
-						{/* Bottom Tier Rim Platform */}
 						<div className='w-56 sm:w-64 h-8 -mt-3.5 rounded-[50%] bg-gradient-to-r from-[#7a5511] via-[#e5b842] via-50% to-[#543806] p-[2px] shadow-[0_12px_28px_rgba(0,0,0,0.95)]'>
 							<div className='w-full h-full rounded-[50%] bg-gradient-to-b from-[#1c1407] to-[#000000]'></div>
 						</div>
-						{/* Base Radial Light Glow Reflection */}
 						<div
 							aria-hidden='true'
 							className='absolute -bottom-3 w-52 h-6 bg-amber-400/25 rounded-full blur-md pointer-events-none'
 						></div>
 					</div>
 				</div>
-
 				{/* END: RightEmblemColumn */}
 			</div>
 		</div>

@@ -1,14 +1,5 @@
 .page-header-bg {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 400px;
-	width: 100%;
-	background-image: url('/images/db-bg.png');
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-	z-index: -99999;
+	display: none;
 }
 
 .page-heading-wrapper {

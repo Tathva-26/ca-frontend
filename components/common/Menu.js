@@ -21,79 +21,17 @@ export default function Menu({ show, onClose }) {
 				</div>
 			</div>
 
-            <div className={styles['menu-content']}>
-				<span className={styles['menu-section-label']}>Navigate</span>
-				<ul className={styles['menu-links']} onClick={onClose}>
-					<li>
-						<Link href='/'>
-
-                            <span>Home</span>
-
-                        </Link>
-					</li>
-					<li>
-						<Link href='/rewards'>
-
-                            <span>Rewards & Prizes</span>
-
-                        </Link>
-					</li>
-					<li>
-						<Link href='/#benefits'>
-
-                            <span>Benefits</span>
-
-                        </Link>
-					</li>
-					<li className={styles['desktop-only-link']}>
-						<Link href='/#idea'>
-
-                            <span>The Idea</span>
-
-                        </Link>
-					</li>
-					<li className={styles['desktop-only-link']}>
-						<Link href='/#mission'>
-
-                            <span>Your Mission</span>
-
-                        </Link>
-					</li>
-					<li>
-						<Link href='/#testimonials'>
-
-                            <span>Ambassador Stories</span>
-
-                        </Link>
-					</li>
-					<li>
-						<Link href='/leaderboard'>
-
-                            <span>Leaderboard</span>
-
-                        </Link>
-					</li>
-					<li>
-						<Link href='/contact'>
-
-                            <span>Contact Us</span>
-
-                        </Link>
-					</li>
-				</ul>
-
-				<div className={styles['menu-footer']}>
-					<Link
-                        href={isLoggedIn ? '/dashboard/profile' : '/login'}
-                        onClick={onClose}
-                        className='btn-primary'
-                        style={{ width: '100%', justifyContent: 'center' }}>
-
-                        {isLoggedIn ? 'Go to Profile' : 'Sign in to Account →'}
-
-                    </Link>
-				</div>
-			</div>
-        </div>
-    );
+			<ul className={styles['menu-links']} onClick={onClose}>
+				<li>
+					<Link href='/'>Home</Link>
+				</li>
+				<li>
+					<Link href='/leaderboard'>Leaderboard</Link>
+				</li>
+				<li>
+					<Link href='/contact'>Contact</Link>
+				</li>
+			</ul>
+		</div>
+	)
 }

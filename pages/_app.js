@@ -45,7 +45,8 @@ import DashboardLayout from 'components/layouts/DashboardLayout'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const TITLE = `Tathva '26 — Campus Ambassador | NIT Calicut`
+const TITLE = `Tathva '26 — Campus Ambassador`
+
 const DESCRIPTION =
 	"Bring Tathva '26 to your campus. Share the festival, earn points, unlock your official offer letter, and win rewards at NIT Calicut."
 const SITE_URL = 'https://ca.tathva.org/'
