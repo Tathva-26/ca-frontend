@@ -7,8 +7,10 @@ import { FaCrown, FaMedal } from 'react-icons/fa'
 
 const ITEMS_PER_PAGE = 10
 
-/* GET /api/leaderboard/get returns rows already ranked:
-   { rank, name, college, referrals }. Each confirmed referral is one point. */
+/* Shape this page expects once a leaderboard endpoint exists: rows already
+   ranked, as { rank, name, college, referrals }. Nothing serves that today —
+   see lib/req/leaderboard — so `raw` is an empty array and the page renders
+   its "sign in to view rank" state. */
 function normalizeLeaderboard(raw) {
 	if (!Array.isArray(raw)) return []
 	return raw.map((entry) => ({

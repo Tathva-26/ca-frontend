@@ -1,30 +1,63 @@
 import { useEffect, useState } from 'react'
 import { useUserContext } from 'context/UserContext'
-import { fetchReferrals } from 'lib/req/referrals'
-import { toast } from 'react-toastify'
+import { fetchReferralCode, fetchReferralStats } from 'lib/req/referrals'
 
 import NotActive from 'components/dashboard/NotActive'
 import YourReferrals from 'components/dashboard/referrals/YourReferrals'
 import DashboardLoading from 'components/dashboard/DashboardLoading'
 
 export default function Referals() {
-	const { user, sectionsConfig } = useUserContext()
+	const { user, sectionsConfig, authLoading, isLoggedIn } = useUserContext()
 
 	const [loading, setLoading] = useState(true)
-	const [referrals, setReferrals] = useState([])
+	const [stats, setStats] = useState(null)
+	const [error, setError] = useState(null)
 
 	useEffect(() => {
-		if (!sectionsConfig?.referrals) return
-		fetchReferrals()
-			.then((data) => {
-				setReferrals(data)
-				setLoading(false)
-			})
-			.catch((err) => {
-				console.error(err)
-				toast.error('Failed to load referrals')
-			})
-	}, [sectionsConfig])
+		if (!sectionsConfig?.referrals || authLoading || !isLoggedIn) return
+
+		let cancelled = false
+
+		async function load() {
+			try {
+				const next = await fetchReferralStats()
+
+				/*
+				 * The stats call reports a code only once the provider has a
+				 * referrer record. `/api/referrals/code` is what creates one,
+				 * so it is the fallback rather than a duplicate request.
+				 */
+				if (!next.referralCode) {
+					try {
+						next.referralCode = await fetchReferralCode()
+						next.registered = true
+					} catch (codeErr) {
+						console.error('Failed to issue a referral code:', codeErr)
+					}
+				}
+
+				if (!cancelled) setStats(next)
+			} catch (err) {
+				console.error('Failed to load referrals:', err)
+				if (cancelled) return
+
+				// 403 means this account is not a CA, which is a different thing
+				// from the call failing.
+				setError(
+					err?.response?.status === 403
+						? 'This account is not registered as a campus ambassador.'
+						: 'Could not load your referral stats. Please try again.'
+				)
+			} finally {
+				if (!cancelled) setLoading(false)
+			}
+		}
+
+		load()
+		return () => {
+			cancelled = true
+		}
+	}, [sectionsConfig, authLoading, isLoggedIn])
 
 	if (!sectionsConfig?.referrals) return <NotActive />
 	else if (loading) return <DashboardLoading />
@@ -33,59 +66,33 @@ export default function Referals() {
 			<div className='dashboard-main-content'>
 				<div className='referral-code'>
 					<div className='code'>REF</div>
-					<div>{user?.refCode || '--'}</div>
+					<div>{stats?.referralCode || user?.refCode || '--'}</div>
 				</div>
 
 				<div className='spacerv-sm'></div>
 
+				{/*
+				  The points table that used to live here described a scheme this
+				  backend does not implement: referrals are attributed by our
+				  ticketing provider and reported as confirmed tickets and sales
+				  totals, with no per-event point values and no points leaderboard.
+				  Keeping it would have promised ambassadors a score nothing computes.
+				*/}
 				<div className='referrals-points'>
-					<h4>Points per Person</h4>
+					<h4>How it works</h4>
 					<p>
-						Refer friends to Tathva events, workshops and lectures using your unique referral code
-						to receive points.
+						Share your code — or a link carrying{' '}
+						<code>?referral_code={stats?.referralCode || 'YOURCODE'}</code> — with
+						friends registering for Tathva events, workshops and lectures. Every
+						booking they pay for is counted against your code.
 					</p>
-					<div style={{
-						marginBottom: '1rem',
-						padding: '0.6rem 1rem',
-						background: 'rgba(212, 175, 55, 0.1)',
-						border: '1px solid rgba(212, 175, 55, 0.25)',
-						borderRadius: '8px',
-						color: '#d4af37',
-						fontSize: '0.85rem',
-						display: 'flex',
-						alignItems: 'center',
-						gap: '8px'
-					}}>
-						<span>🏆</span>
-						<span><strong>Leaderboard Rule:</strong> Minimum of <strong>299 points</strong> to be included in the leaderboard.</span>
-					</div>
-					<table>
-						<tbody>
-							<tr>
-								<td>Workshop</td>
-								<td>10</td>
-							</tr>
-							<tr>
-								<td>Lectures</td>
-								<td>3</td>
-							</tr>
-							<tr>
-								<td>Hackathons</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>Events</td>
-								<td>10</td>
-							</tr>
-							<tr>
-								<td>Registration</td>
-								<td>5</td>
-							</tr>
-						</tbody>
-					</table>
+					<p>
+						Only confirmed bookings count, so a registration shows up once
+						payment has gone through rather than the moment it is started.
+					</p>
 				</div>
 				<div className='spacerv-sm'></div>
-				<YourReferrals referrals={referrals} />
+				<YourReferrals stats={stats} loading={loading} error={error} />
 			</div>
 		)
 }

@@ -10,7 +10,7 @@ const UserContext = createContext()
 // `signIn.social` starts Google OAuth, `signOut` clears it. No token is ever
 // visible here — not in state, storage, or URLs.
 const { signIn, signOut, useSession } = createAuthClient({
-	baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+	baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000',
 })
 
 // GET /api/user/ returns { id, email, name, phone, referralCode, college,
@@ -37,8 +37,10 @@ function normalizeProfile(data) {
 		semester: data.semester || '',
 		district: data.district || '',
 		state: data.state || '',
+		// CA only, and only once the ticketing provider has issued it — see
+		// lib/req/referrals. Blank is normal, not missing data.
 		refCode: data.referralCode || '',
-		totalPoints: data.totalPoints || 0,
+		role: data.role,
 	}
 }
 
@@ -85,6 +87,29 @@ export default function UserContextWrapper({ children }) {
 	const isLoggedIn = !!sessionUser && !!profile
 	const authLoading = sessionPending || profileLoading
 
+	/*
+	 * Which dashboard sections are live.
+	 *
+	 * This used to come from a `/api/config` endpoint that the backend does
+	 * not have — so `sectionsConfig` was permanently undefined and every
+	 * dashboard page rendered <NotActive /> regardless of what was working.
+	 * Until there is an endpoint for it, the flags are build-time config.
+	 *
+	 * Referrals are on because they are backed by real endpoints
+	 * (`/api/referrals`). The rest run on Google Apps Script and Firebase, not
+	 * this backend, so they stay opt-in.
+	 */
+	const sectionsConfig = useMemo(
+		() => ({
+			referrals: true,
+			posters: process.env.NEXT_PUBLIC_SECTION_POSTERS === 'true',
+			feedback: process.env.NEXT_PUBLIC_SECTION_FEEDBACK === 'true',
+			whatsapp: !!process.env.NEXT_PUBLIC_WHATSAPP_LINK,
+			whatsappLink: process.env.NEXT_PUBLIC_WHATSAPP_LINK || '',
+		}),
+		[]
+	)
+
 	// Google sign-in via better-auth: POSTs /api/auth/sign-in/social, which
 	// answers { url, redirect: true } and the client navigates to Google.
 	// New users on this site become CAs (role rides in the OAuth state).
@@ -119,11 +144,12 @@ export default function UserContextWrapper({ children }) {
 			user,
 			isLoggedIn,
 			authLoading,
+			sectionsConfig,
 			loginWithGoogle,
 			logout,
 			refreshProfile,
 		}),
-		[user, isLoggedIn, authLoading, loginWithGoogle, logout, refreshProfile]
+		[user, isLoggedIn, authLoading, sectionsConfig, loginWithGoogle, logout, refreshProfile]
 	)
 
 	return <UserContext.Provider value={value}>{children}</UserContext.Provider>

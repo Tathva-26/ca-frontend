@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { toast } from 'react-toastify'
 import { useUserContext } from 'context/UserContext'
-import { fetchReferrals } from 'lib/req/referrals'
+import { fetchReferralCode, fetchReferralStats } from 'lib/req/referrals'
 import {
 	FiCopy,
 	FiCheck,
@@ -12,8 +12,6 @@ import {
 	FiMail,
 	FiPhone,
 	FiUser,
-	FiChevronLeft,
-	FiChevronRight,
 	FiEdit2,
 	FiX,
 	FiBookOpen,
@@ -23,7 +21,7 @@ import {
 	FiAlertCircle,
 } from 'react-icons/fi'
 import { FaWhatsapp } from 'react-icons/fa'
-import api from 'lib/api'
+import api, { apiErrorMessage } from 'lib/api'
 
 import s from '../styles/hub-profile.module.css'
 
@@ -119,8 +117,16 @@ export function calculateMilestoneProgress(count, milestones = REFERRAL_MILESTON
 	return 100
 }
 
-const ROWS_PER_PAGE = 10
-const REFERRAL_BASE_URL = 'https://ca.tathva.org/?ref='
+/*
+ * A referral link has to land on the main site, where events are booked, and
+ * carry the parameter that site reads — `referral_code`, per the booking
+ * contract. It used to point at this site with `?ref=`, which nothing ever
+ * looked at, so every shared link was unattributed.
+ */
+const MAIN_SITE_URL = (
+	process.env.NEXT_PUBLIC_MAIN_SITE_URL || 'https://tathva.org'
+).replace(/\/$/, '')
+const REFERRAL_BASE_URL = `${MAIN_SITE_URL}/?referral_code=`
 
 /* Invite link for the campus ambassador WhatsApp group, shown at the top of
    every profile. There's no backend config endpoint for it, so it lives here —
@@ -222,9 +228,8 @@ export default function ProfilePage() {
 	const { user: profile, authLoading, logout, refreshProfile } = useUserContext()
 	const router = useRouter()
 
-	const [referrals, setReferrals] = useState([])
+	const [referralStats, setReferralStats] = useState(null)
 	const loading = authLoading || !profile
-	const [page, setPage] = useState(0)
 
 	// edit state
 	const [isEditing, setIsEditing] = useState(false)
@@ -271,16 +276,43 @@ export default function ProfilePage() {
 			router.push('/login')
 			return
 		}
-		fetchReferrals()
-			.then((data) => setReferrals(data || []))
-			.catch(() => setReferrals([]))
+		/*
+		 * Aggregates, not a list: our ticketing provider attributes bookings to
+		 * a code and reports the totals, but exposes no endpoint enumerating
+		 * the individual referrals — so there is nothing to page through.
+		 */
+		let cancelled = false
+
+		fetchReferralStats()
+			.then(async (stats) => {
+				// A CA has no code until the provider has a referrer record for
+				// them; `/api/referrals/code` is what creates one.
+				if (!stats.referralCode) {
+					try {
+						stats.referralCode = await fetchReferralCode()
+						stats.registered = true
+					} catch (err) {
+						console.error('Failed to issue a referral code:', err)
+					}
+				}
+				if (!cancelled) setReferralStats(stats)
+			})
+			.catch((err) => {
+				console.error('Failed to load referral stats:', err)
+				if (!cancelled) setReferralStats(null)
+			})
+
+		return () => {
+			cancelled = true
+		}
 	}, [authLoading, profile])
 
 	/* derived */
-	const refCode = profile?.refCode || ''
-	const totalPoints = profile?.totalPoints || 0
-	const activeReferrals = referrals
-	const totalReferrals = activeReferrals.length
+	// The stats call is the fresher of the two: the profile's cached copy can
+	// predate the code actually being issued.
+	const refCode = referralStats?.referralCode || profile?.refCode || ''
+	const totalReferrals = referralStats?.ticketCount ?? 0
+	const totalSales = referralStats?.salesAmount ?? 0
 	const earnedRewards = useMemo(() => calculateReferralRewards(totalReferrals), [totalReferrals])
 	const referralLink = refCode ? `${REFERRAL_BASE_URL}${refCode}` : ''
 	const firstName = (profile?.name || 'Ambassador').split(' ')[0]
@@ -321,17 +353,6 @@ export default function ProfilePage() {
 		}, 150)
 		return () => clearTimeout(timer)
 	}, [fillPercent, loading])
-
-	/* pagination */
-	const totalPages = Math.max(1, Math.ceil(activeReferrals.length / ROWS_PER_PAGE))
-	const paginatedReferrals = activeReferrals.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE)
-
-	// Keep page within bounds when referral count changes
-	useEffect(() => {
-		if (page >= totalPages && totalPages > 0) {
-			setPage(Math.max(0, totalPages - 1))
-		}
-	}, [totalPages, page])
 
 	/* ── whatsapp group popup ── */
 	// Opens once the profile is on screen, unless this browser opted out before.
@@ -466,9 +487,9 @@ export default function ProfilePage() {
 				err.response?.status,
 				err.response?.data || err.message
 			)
-			toast.error(
-				err.response?.data?.message || err.response?.data?.error || 'Failed to update CA details'
-			)
+			// A validation failure comes back as an array of issues under
+			// `error`, not a string; apiErrorMessage unpacks either shape.
+			toast.error(apiErrorMessage(err, 'Failed to update CA details'))
 		} finally {
 			setSaving(false)
 		}
@@ -1231,7 +1252,14 @@ export default function ProfilePage() {
 					</div>
 				</section>
 
-				{/* ── REFERRALS TABLE ── */}
+				{/* ── REFERRAL TOTALS ── */}
+				{/*
+				  This was a paginated table of individual referrals. Our ticketing
+				  provider owns referral attribution and reports only aggregates —
+				  confirmed ticket count and sales total — with no endpoint listing
+				  the bookings behind them. The table could only ever have been empty,
+				  which read as "no referrals" rather than "not available".
+				*/}
 				<section className={s.tableSection}>
 					<div className={s.tableHeader}>
 						<div className={s.tableHeaderLeft}>
@@ -1240,69 +1268,46 @@ export default function ProfilePage() {
 						</div>
 						<div className={s.tableCount}>
 							<p className={s.tableCountNum}>{totalReferrals}</p>
-							<p className={s.tableCountLabel}>Total referrals</p>
+							<p className={s.tableCountLabel}>Tickets sold</p>
 						</div>
 					</div>
 
-					{activeReferrals.length > 0 ? (
-						<>
-							<div className={s.tableScroll}>
-								<table className={s.refTable}>
-									<thead>
-										<tr>
-											<th>Name</th>
-											<th>Event</th>
-											<th>Type</th>
-											<th>Points</th>
-										</tr>
-									</thead>
-									<tbody>
-										{paginatedReferrals.map((r, i) => (
-											<tr key={i}>
-												<td className={s.tdName}>{r.name}</td>
-												<td className={s.tdEvent}>{r.event}</td>
-												<td>
-													<span className={s.typeBadge}>{r.type}</span>
-												</td>
-												<td className={s.tdPoints}>+{r.points}</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-
-							{/* Pagination */}
-							<div className={s.pagination}>
-								<span className={s.paginationInfo}>
-									Showing {page * ROWS_PER_PAGE + 1}–
-									{Math.min((page + 1) * ROWS_PER_PAGE, totalReferrals)} of {totalReferrals}
-								</span>
-								<div className={s.paginationBtns}>
-									<button
-										className={s.pageBtn}
-										disabled={page === 0}
-										onClick={() => setPage((p) => p - 1)}
-									>
-										<FiChevronLeft /> Prev
-									</button>
-									<button
-										className={s.pageBtn}
-										disabled={page >= totalPages - 1}
-										onClick={() => setPage((p) => p + 1)}
-									>
-										Next <FiChevronRight />
-									</button>
-								</div>
-							</div>
-						</>
-					) : (
+					{referralStats?.registered === false ? (
+						<div className={s.emptyState}>
+							<span className={s.emptyIcon}>🎟️</span>
+							<span className={s.emptyText}>
+								Your referral account is being set up. Complete your CA details
+								above and your code will be issued automatically.
+							</span>
+						</div>
+					) : totalReferrals === 0 ? (
 						<div className={s.emptyState}>
 							<span className={s.emptyIcon}>📭</span>
 							<span className={s.emptyText}>
 								No referrals yet! Share your referral code to get started!
 							</span>
 						</div>
+					) : (
+						<div className={s.tableScroll}>
+							<table className={s.refTable}>
+								<tbody>
+									<tr>
+										<td className={s.tdName}>Confirmed tickets</td>
+										<td className={s.tdPoints}>{totalReferrals}</td>
+									</tr>
+									<tr>
+										<td className={s.tdName}>Total sales</td>
+										<td className={s.tdPoints}>₹{totalSales}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					)}
+
+					<p className={s.tableCountLabel} style={{ marginTop: '1rem' }}>
+						Only paid bookings count, and a new one can take a few minutes to
+						appear here.
+					</p>
 				</section>
 			</div>
 		</div>
