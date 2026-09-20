@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useUserContext } from 'context/UserContext'
-import { fetchReferrals } from 'lib/req/referrals'
+import { fetchReferralStats } from 'lib/req/referrals'
 import { toast } from 'react-toastify'
 
 import NotActive from 'components/dashboard/NotActive'
@@ -8,32 +8,36 @@ import YourReferrals from 'components/dashboard/referrals/YourReferrals'
 import DashboardLoading from 'components/dashboard/DashboardLoading'
 
 export default function Referals() {
-	const { user, sectionsConfig } = useUserContext()
+	const { user } = useUserContext()
 
 	const [loading, setLoading] = useState(true)
-	const [referrals, setReferrals] = useState([])
+	const [stats, setStats] = useState(null)
 
+	/*
+	 * This page used to gate on `sectionsConfig?.referrals` from the user
+	 * context. The context has never provided `sectionsConfig`, so the value
+	 * was always undefined and the page rendered <NotActive /> for everyone —
+	 * the fetch below never even ran. The only supplier was
+	 * lib/req/sections-config.js, which calls GET /api/config (a 404 on this
+	 * backend) and is imported nowhere.
+	 */
 	useEffect(() => {
-		if (!sectionsConfig?.referrals) return
-		fetchReferrals()
-			.then((data) => {
-				setReferrals(data)
-				setLoading(false)
-			})
+		fetchReferralStats()
+			.then((data) => setStats(data))
 			.catch((err) => {
 				console.error(err)
 				toast.error('Failed to load referrals')
 			})
-	}, [sectionsConfig])
+			.finally(() => setLoading(false))
+	}, [])
 
-	if (!sectionsConfig?.referrals) return <NotActive />
-	else if (loading) return <DashboardLoading />
+	if (loading) return <DashboardLoading />
 	else
 		return (
 			<div className='dashboard-main-content'>
 				<div className='referral-code'>
 					<div className='code'>REF</div>
-					<div>{user?.refCode || '--'}</div>
+					<div>{user?.refCode || stats?.referralCode || '--'}</div>
 				</div>
 
 				<div className='spacerv-sm'></div>
@@ -85,7 +89,7 @@ export default function Referals() {
 					</table>
 				</div>
 				<div className='spacerv-sm'></div>
-				<YourReferrals referrals={referrals} />
+				<YourReferrals stats={stats} loading={loading} />
 			</div>
 		)
 }

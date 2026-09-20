@@ -37,6 +37,7 @@ function normalizeProfile(data) {
 		semester: data.semester || '',
 		district: data.district || '',
 		state: data.state || '',
+		role: data.role || '',
 		refCode: data.referralCode || '',
 		totalPoints: data.totalPoints || 0,
 	}
@@ -53,6 +54,22 @@ export default function UserContextWrapper({ children }) {
 		try {
 			const { data } = await api.get('/api/user/')
 			const normalized = normalizeProfile(data)
+
+			// The referral code is no longer minted at sign-up. TIQR issues it,
+			// and the backend mints and caches it on the first call to
+			// GET /api/referrals/code (see lib/auth.js in backend_v2), so
+			// GET /api/user/ answers with null until that has happened once.
+			// Without this the dashboard shows "--" forever.
+			if (normalized && !normalized.refCode) {
+				try {
+					const { data: codeData } = await api.get('/api/referrals/code')
+					if (codeData?.referralCode) normalized.refCode = codeData.referralCode
+				} catch {
+					// 403 on non-CA accounts, and TIQR may be unreachable.
+					// Neither is a reason to fail the whole profile load.
+				}
+			}
+
 			setProfile(normalized)
 			return normalized
 		} catch {

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { toast } from 'react-toastify'
 import { useUserContext } from 'context/UserContext'
-import { fetchReferrals } from 'lib/req/referrals'
+import { fetchReferralStats } from 'lib/req/referrals'
 import {
 	FiCopy,
 	FiCheck,
@@ -120,7 +120,20 @@ export function calculateMilestoneProgress(count, milestones = REFERRAL_MILESTON
 }
 
 const ROWS_PER_PAGE = 10
-const REFERRAL_BASE_URL = 'https://ca.tathva.org/?ref='
+/*
+ * A referral link has to land on the PUBLIC site, not this one. The main site
+ * captures the code into localStorage on arrival (temp/src/lib/referral.js,
+ * called from its UserContext) and sends it with POST /api/booking/create.
+ * Nothing on ca.tathva.org reads the parameter, and there is nothing to book
+ * here — a link pointing at this domain loses the attribution entirely.
+ *
+ * `referral_code` is the documented parameter; the main site also still
+ * accepts `ref` for links already out in the world.
+ */
+const MAIN_SITE_URL = (
+	process.env.NEXT_PUBLIC_MAIN_SITE_URL || 'https://tathva.org'
+).replace(/\/$/, '')
+const REFERRAL_BASE_URL = `${MAIN_SITE_URL}/?referral_code=`
 
 /* Invite link for the campus ambassador WhatsApp group, shown at the top of
    every profile. There's no backend config endpoint for it, so it lives here —
@@ -222,7 +235,7 @@ export default function ProfilePage() {
 	const { user: profile, authLoading, logout, refreshProfile } = useUserContext()
 	const router = useRouter()
 
-	const [referrals, setReferrals] = useState([])
+	const [referralStats, setReferralStats] = useState(null)
 	const loading = authLoading || !profile
 	const [page, setPage] = useState(0)
 
@@ -271,16 +284,26 @@ export default function ProfilePage() {
 			router.push('/login')
 			return
 		}
-		fetchReferrals()
-			.then((data) => setReferrals(data || []))
-			.catch(() => setReferrals([]))
+		fetchReferralStats()
+			.then((data) => setReferralStats(data))
+			.catch(() => setReferralStats(null))
 	}, [authLoading, profile])
 
 	/* derived */
 	const refCode = profile?.refCode || ''
 	const totalPoints = profile?.totalPoints || 0
-	const activeReferrals = referrals
-	const totalReferrals = activeReferrals.length
+	// TIQR reports a confirmed-booking count, not a list of bookings, so the
+	// milestone maths is driven by that count directly.
+	const totalReferrals = referralStats?.ticketCount || 0
+
+	/*
+	 * Always empty: there is no per-referral data to show. TIQR attributes
+	 * bookings to a referrer and reports the totals, but exposes no endpoint
+	 * listing those bookings, so the table below cannot be populated. The
+	 * count above is real; the rows are not available. Kept as an array so the
+	 * pagination code stays intact if a listing endpoint ever appears.
+	 */
+	const activeReferrals = []
 	const earnedRewards = useMemo(() => calculateReferralRewards(totalReferrals), [totalReferrals])
 	const referralLink = refCode ? `${REFERRAL_BASE_URL}${refCode}` : ''
 	const firstName = (profile?.name || 'Ambassador').split(' ')[0]
@@ -1297,9 +1320,11 @@ export default function ProfilePage() {
 						</>
 					) : (
 						<div className={s.emptyState}>
-							<span className={s.emptyIcon}>📭</span>
+							<span className={s.emptyIcon}>{totalReferrals > 0 ? '📊' : '📭'}</span>
 							<span className={s.emptyText}>
-								No referrals yet! Share your referral code to get started!
+								{totalReferrals > 0
+									? `${totalReferrals} booking${totalReferrals === 1 ? '' : 's'} counted against your code. A per-booking breakdown isn't available.`
+									: 'No referrals yet! Share your referral code to get started!'}
 							</span>
 						</div>
 					)}
