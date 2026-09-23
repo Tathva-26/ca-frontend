@@ -21,7 +21,6 @@ import {
 } from 'react-icons/fi'
 import { FaWhatsapp } from 'react-icons/fa'
 import api from 'lib/api'
-import { canAccessProfile } from 'lib/registration'
 
 import s from '../styles/hub-profile.module.css'
 
@@ -257,9 +256,6 @@ export default function ProfilePage() {
 	useEffect(() => {
 		if (!profile || !router.isReady || openedEditRef.current) return
 		openedEditRef.current = true
-		// While new sign-ups are off, an incomplete profile is not allowed to
-		// finish registering through the profile form.
-		if (!canAccessProfile(profile)) return
 		if (router.query.editprofile === 'true' || !profile.isComplete) startEditing()
 	}, [profile, router.isReady])
 
@@ -267,12 +263,6 @@ export default function ProfilePage() {
 		if (authLoading) return // wait for context to finish restoring the session
 		if (!profile) {
 			router.push('/login')
-			return
-		}
-		// Registrations are closed and this account never completed its CA
-		// profile — it cannot be activated here, so send it to the closed page.
-		if (!canAccessProfile(profile)) {
-			router.push('/regclosed')
 			return
 		}
 		let cancelled = false
@@ -458,14 +448,6 @@ export default function ProfilePage() {
 
 	async function handleSaveProfile(e) {
 		e?.preventDefault()
-
-		// Registrations are closed — a blocked (incomplete) profile cannot be
-		// activated through this form, even if it was already open.
-		if (!canAccessProfile(profile)) {
-			toast.error('Registrations are currently closed.')
-			router.push('/regclosed')
-			return
-		}
 
 		const { values, errors } = validateProfileForm(editFormData)
 		if (Object.keys(errors).length > 0) {

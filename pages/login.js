@@ -1,20 +1,18 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/UserContext'
-import { canAccessProfile } from 'lib/registration'
 import { FcGoogle } from 'react-icons/fc'
 import styles from '../styles/login.module.css'
 
 export default function Login() {
 	const router = useRouter()
-	const { user, loginWithGoogle, isLoggedIn, authLoading } = useUserContext()
+	const { loginWithGoogle, isLoggedIn, authLoading } = useUserContext()
 
 	useEffect(() => {
 		if (authLoading || !isLoggedIn) return
 
-		if (canAccessProfile(user)) router.push('/profile')
-		else router.push('/regclosed')
-	}, [authLoading, isLoggedIn, user, router])
+		router.push('/profile')
+	}, [authLoading, isLoggedIn, router])
 
 	useEffect(() => {
 		const nextRoot = document.getElementById('__next')

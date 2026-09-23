@@ -4,7 +4,6 @@ import Page2 from 'components/homepage/Page2'
 import Benefits from 'components/homepage/Benefits'
 import Page4 from 'components/homepage/Page4'
 import RUReady from 'components/common/RUReady'
-import { NEW_REGISTRATIONS_ENABLED } from 'lib/registration'
 
 const loadSpaceBackground = () => import('components/common/SpaceBackground')
 
@@ -46,7 +45,7 @@ export default function Home() {
 				<div className='animate-section'>
 					<Page4 />
 				</div>
-				<div className='animate-section'>{NEW_REGISTRATIONS_ENABLED && <RUReady />}</div>
+				<div className='animate-section'><RUReady /></div>
 			</div>
 		</>
 	)

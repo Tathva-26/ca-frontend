@@ -3,11 +3,9 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { FcGoogle } from 'react-icons/fc'
 import { completeProfile } from 'lib/req/register'
-import { NEW_REGISTRATIONS_ENABLED } from 'lib/registration'
 import { useUserContext } from 'context/UserContext'
 import authStyles from 'styles/login.module.css'
 import styles from './register-form.module.css'
-import RegisterClosed from 'components/regclosed/RegisterClosed'
 
 export default function RegisterForm({ editProfile }) {
 	const { user, isLoggedIn, authLoading, loginWithGoogle, refreshProfile } = useUserContext()
@@ -83,10 +81,6 @@ export default function RegisterForm({ editProfile }) {
 
 	if (authLoading) {
 		return <div className={authStyles.container} />
-	}
-
-	if (!NEW_REGISTRATIONS_ENABLED && (!isLoggedIn || !user?.isComplete)) {
-		return <RegisterClosed />
 	}
 
 	if (!isLoggedIn) {

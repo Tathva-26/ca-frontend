@@ -30,6 +30,7 @@ function normalizeProfile(data) {
 		),
 		name: data.name,
 		email: data.email,
+		role: data.role,
 		phone: data.phone || '',
 		college: data.college || '',
 		branch: data.branch || '',
